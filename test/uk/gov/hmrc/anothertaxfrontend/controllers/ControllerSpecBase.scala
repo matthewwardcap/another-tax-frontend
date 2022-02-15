@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
-import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.test.Helpers._
+import play.api.mvc.AnyContentAsEmpty
+import play.api.test.{FakeRequest, Injecting}
+import uk.gov.hmrc.anothertaxfrontend.core.UnitSpec
 
-class HelloWorldControllerSpec extends ControllerSpecBase {
+class ControllerSpecBase extends UnitSpec with GuiceOneAppPerSuite with Injecting {
 
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
@@ -31,23 +33,6 @@ class HelloWorldControllerSpec extends ControllerSpecBase {
       )
       .build()
 
-  private val controller = inject[HelloWorldController]
-
-  "HelloWorldController" when {
-    "calling helloWorld()" must {
-
-      "return 200 (Ok)" in {
-        val result = controller.helloWorld(fakeRequest)
-        status(result) mustBe Status.OK
-      }
-
-      "return HTML" in {
-        val result = controller.helloWorld(fakeRequest)
-        contentType(result) mustBe Some("text/html")
-        charset(result) mustBe Some("utf-8")
-      }
-
-    }
-  }
+  val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
 
 }

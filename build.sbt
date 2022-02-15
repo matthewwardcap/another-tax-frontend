@@ -12,6 +12,10 @@ lazy val microservice = Project(appName, file("."))
     scalaVersion                     := "2.12.14",
     libraryDependencies              ++= AppDependencies.compile ++ AppDependencies.test,
     pipelineStages in Assets := Seq(gzip),
+    TwirlKeys.templateImports ++= Seq(
+      "uk.gov.hmrc.govukfrontend.views.html.components._",
+      "uk.gov.hmrc.hmrcfrontend.views.html.components._"
+    ),
     // ***************
     // Use the silencer plugin to suppress warnings
     scalacOptions += "-P:silencer:pathFilters=routes,silencer:pathFilters=twirl",
