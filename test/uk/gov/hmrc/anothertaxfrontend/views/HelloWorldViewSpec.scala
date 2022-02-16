@@ -29,7 +29,7 @@ class HelloWorldViewSpec extends ViewSpecBase {
         val target = inject[HelloWorldPage]
         val result: Html = target()
         lazy implicit val document: Document = Jsoup.parse(result.body)
-        elementText("h1") mustBe "another-tax-frontend"
+        elementText("h1") mustBe "Another Tax Service"
       }
     }
   }
