@@ -1,2 +1,7 @@
-service.name = another-tax-frontend
-service.text = This is your new service
+service.name = Another Tax Service
+service.text = Enter your current education and annual salary to see what you're required to pay for the new Another Tax
+
+namePage.title = Enter your name
+namePage.firstName = First Name
+namePage.middleName = Middle Name
+namePage.lastName = Last Name

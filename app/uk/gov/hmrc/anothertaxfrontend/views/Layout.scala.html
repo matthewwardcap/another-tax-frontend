@@ -25,9 +25,9 @@
 @(pageTitle: Option[String] = None)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @hmrcLayout(
-    pageTitle = pageTitle,
-    nonce = CSPNonce.get,
-    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
+ pageTitle = pageTitle,
+ nonce = CSPNonce.get,
+ isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
 )(contentBlock)
 
 @{
