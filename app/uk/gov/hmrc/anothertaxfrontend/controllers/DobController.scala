@@ -18,30 +18,21 @@ package uk.gov.hmrc.anothertaxfrontend.controllers
 
 import uk.gov.hmrc.anothertaxfrontend.forms.UserForm
 import uk.gov.hmrc.anothertaxfrontend.forms.UserForm._
-import uk.gov.hmrc.anothertaxfrontend.models.User._
-import uk.gov.hmrc.anothertaxfrontend.views.html.NamePage
-import uk.gov.hmrc.anothertaxfrontend.controllers.DobController
+import uk.gov.hmrc.anothertaxfrontend.views.html.DobPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.anothertaxfrontend.models.User
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class NameController @Inject()(
+class DobController @Inject()(
                                       mcc: MessagesControllerComponents,
-                                      namePage: NamePage)
+                                      dobPage: DobPage)
   extends FrontendController(mcc) {
 
-  val name: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(namePage(UserForm.form)))
-  }
-
-  def post: Action[AnyContent] = Action.async { implicit request =>
-    form
-      .bindFromRequest()
-      .fold(
-        formWithErrors => Future.successful(BadRequest(namePage(formWithErrors))),
-        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.dob))
-      )
+  def dob: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(dobPage(UserForm.form)))
   }
 }

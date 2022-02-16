@@ -17,15 +17,13 @@
 @import uk.gov.hmrc.anothertaxfrontend.views.html.Layout
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.anothertaxfrontend.models.User
-
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukInput : GovukInput)
-
 @(form: play.api.data.Form[User])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
-    <h1 class="govuk-heading-xl">@{messages("namePage.title")}</h1>
+    <h1 class="govuk-heading-xl">@{messages("dobPage.title")}</h1>
 
-    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.dob) {
+    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld) {
         @govukInput(Input(
             id = "width-20",
             name = "first-name",
@@ -58,5 +56,5 @@
 }
 
 @{
-  //$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

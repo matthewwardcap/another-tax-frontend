@@ -5,3 +5,5 @@ namePage.title = Enter your name
 namePage.firstName = First Name
 namePage.middleName = Middle Name
 namePage.lastName = Last Name
+
+dobPage.title = Enter your date of birth
