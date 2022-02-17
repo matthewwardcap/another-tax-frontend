@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.anothertaxfrontend.models
+package uk.gov.hmrc.anothertaxfrontend.forms
+import play.api.data.Forms._
+import play.api.data.Form
+import play.api.data.validation.Constraints._
+import java.time.Year
 
-import java.util.Date
-import play.api.libs.json._
-
-case class User(
-                 firstName:Option[String],
-                 middleName:Option[String],
-                 lastName:Option[String],
-                 dob:Option[Date],
-                 education:Option[Boolean],
-                 educationDate:Option[Date],
-                 employmentStatus:Option[String],
-                 salary:Option[BigDecimal]
+case class DobData(
+                 day:Int,
+                 month:Int,
+                 year:Int
                )
 
-object User {
-  implicit val format: OFormat[User] = Json.format[User]
+object DobForm {
+  val form: Form[DobData] = Form(mapping(
+    "day" -> number.verifying(min(1), max(31)),
+    "month" -> number.verifying(min(1), max(12)),
+    "year" -> number.verifying(min(1900), max(Year.now.getValue))
+  )(DobData.apply)(DobData.unapply)
+  )
 }

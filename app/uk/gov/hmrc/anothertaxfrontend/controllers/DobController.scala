@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.UserForm
-import uk.gov.hmrc.anothertaxfrontend.forms.UserForm._
+import uk.gov.hmrc.anothertaxfrontend.forms.DobForm
+import uk.gov.hmrc.anothertaxfrontend.forms.DobForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.DobPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,17 +33,22 @@ class DobController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(dobPage(UserForm.form)))
+    Future.successful(Ok(dobPage(DobForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
+    val user: User = Json.toJson(request.session.get("user")).as[User]
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(dobPage(formWithErrors))),
-        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show)
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show)
           .addingToSession(
-            "user" -> Json.toJson(user).toString,
+            "user" -> Json.toJson(user.copy(
+              dob = Option(format.parse(dataForm.day.toString+dataForm.month.toString+dataForm.year.toString))
+            )
+            ).toString
           )
         )
       )

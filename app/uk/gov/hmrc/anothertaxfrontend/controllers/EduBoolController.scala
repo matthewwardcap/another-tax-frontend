@@ -17,8 +17,8 @@
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.anothertaxfrontend.forms.UserForm
-import uk.gov.hmrc.anothertaxfrontend.forms.UserForm._
+import uk.gov.hmrc.anothertaxfrontend.forms.EduBoolForm
+import uk.gov.hmrc.anothertaxfrontend.forms.EduBoolForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.EduBoolPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,17 +34,22 @@ class EduBoolController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(eduPage(UserForm.form)))
+    Future.successful(Ok(eduPage(EduBoolForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
+    val user: User = Json.toJson(request.session.get("user")).as[User]
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors))),
-        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
           .addingToSession(
-            "user" -> Json.toJson(user).toString,
+            "user" -> Json.toJson(user.copy(
+              education = Option(dataForm.education)
+            )
+            ).toString
           )
         )
       )

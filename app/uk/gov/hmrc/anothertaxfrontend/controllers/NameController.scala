@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.UserForm
-import uk.gov.hmrc.anothertaxfrontend.forms.UserForm._
+import uk.gov.hmrc.anothertaxfrontend.forms.NameForm
+import uk.gov.hmrc.anothertaxfrontend.forms.NameForm._
 import uk.gov.hmrc.anothertaxfrontend.models.User._
+import uk.gov.hmrc.anothertaxfrontend.models.User
 import uk.gov.hmrc.anothertaxfrontend.views.html.NamePage
 import uk.gov.hmrc.anothertaxfrontend.controllers.DobController
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -34,17 +35,24 @@ class NameController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(namePage(UserForm.form)))
+    Future.successful(Ok(namePage(NameForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
+    val user = User(None, None, None, None, None, None, None, None)
+    //val user1: User = Json.parse(request.session.get("user"))
+    //val user: User = Json.toJson(request.session.get("user")).as[User]
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(namePage(formWithErrors))),
-        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show)
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show)
           .addingToSession(
-            "user" -> Json.toJson(user).toString,
+            "user" -> Json.toJson(user.copy(
+              Option(dataForm.firstName),
+              dataForm.middleName,
+              Option(dataForm.lastName))
+            ).toString()
           )
         )
       )

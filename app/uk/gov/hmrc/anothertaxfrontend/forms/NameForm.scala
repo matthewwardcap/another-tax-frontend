@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.anothertaxfrontend.models
+package uk.gov.hmrc.anothertaxfrontend.forms
+import play.api.data.Forms._
+import play.api.data.Form
+import play.api.data.validation.Constraints._
 
-import java.util.Date
-import play.api.libs.json._
-
-case class User(
-                 firstName:Option[String],
+case class Data(
+                 firstName:String,
                  middleName:Option[String],
-                 lastName:Option[String],
-                 dob:Option[Date],
-                 education:Option[Boolean],
-                 educationDate:Option[Date],
-                 employmentStatus:Option[String],
-                 salary:Option[BigDecimal]
+                 lastName:String
                )
 
-object User {
-  implicit val format: OFormat[User] = Json.format[User]
+object NameForm {
+  val form: Form[Data] = Form(mapping(
+    "firstName" -> nonEmptyText,
+    "middleName" -> optional(nonEmptyText),
+    "lastName" -> nonEmptyText
+  )(Data.apply)(Data.unapply)
+  )
 }

@@ -16,9 +16,10 @@
 
 @import uk.gov.hmrc.anothertaxfrontend.views.html.Layout
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.anothertaxfrontend.models.User
+@import uk.gov.hmrc.anothertaxfrontend.forms.DobData
+
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukDateInput : GovukDateInput)
-@(form: play.api.data.Form[User])(implicit request: Request[_], messages: Messages)
+@(form: play.api.data.Form[DobData])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("dobPage.title")}</h1>

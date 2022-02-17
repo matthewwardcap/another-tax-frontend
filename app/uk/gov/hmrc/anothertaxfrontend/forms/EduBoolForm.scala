@@ -18,18 +18,14 @@ package uk.gov.hmrc.anothertaxfrontend.forms
 import play.api.data.Forms._
 import play.api.data.Form
 import play.api.data.validation.Constraints._
-import uk.gov.hmrc.anothertaxfrontend.models.User
-import uk.gov.hmrc.anothertaxfrontend.models.User._
 
-object UserForm {
-  val form: Form[User] = Form(mapping(
-    firstName -> optional(nonEmptyText),
-    middleName -> optional(nonEmptyText),
-    lastName -> optional(nonEmptyText),
-    dob -> optional(date),
-    education -> optional(boolean),
-    educationDate -> optional(date),
-    employmentStatus -> optional(nonEmptyText),
-    salary -> optional(bigDecimal)
-  )(User.apply)(User.unapply))
+case class EduBoolData(
+                 education: Boolean
+               )
+
+object EduBoolForm {
+  val form: Form[EduBoolData] = Form(mapping(
+    "education" -> boolean
+  )(EduBoolData.apply)(EduBoolData.unapply)
+  )
 }
