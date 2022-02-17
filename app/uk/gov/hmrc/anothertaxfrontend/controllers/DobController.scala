@@ -33,6 +33,8 @@ class DobController @Inject()(
   extends FrontendController(mcc) {
 
   def dob: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(dobPage(UserForm.form)))
+    //val x = form.data.getOrElse("first-name", "wrong")
+    val filledForm = form.bindFromRequest()
+    Future.successful(Ok(dobPage(filledForm)))
   }
 }
