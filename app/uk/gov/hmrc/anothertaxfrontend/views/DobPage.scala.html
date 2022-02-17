@@ -23,7 +23,7 @@
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("dobPage.title")}</h1>
 
-    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show) {
+    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.post) {
         @govukDateInput(DateInput(
             id = "dob",
             namePrefix = Some("dob"),

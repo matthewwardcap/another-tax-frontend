@@ -23,6 +23,7 @@ import uk.gov.hmrc.anothertaxfrontend.views.html.NamePage
 import uk.gov.hmrc.anothertaxfrontend.controllers.DobController
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.libs.json._
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -31,10 +32,6 @@ class NameController @Inject()(
                                       mcc: MessagesControllerComponents,
                                       namePage: NamePage)
   extends FrontendController(mcc) {
-
-  val name: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(namePage(UserForm.form)))
-  }
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok(namePage(UserForm.form)))
@@ -47,9 +44,7 @@ class NameController @Inject()(
         formWithErrors => Future.successful(BadRequest(namePage(formWithErrors))),
         user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show)
           .addingToSession(
-            "firstName" -> user.firstName.get,
-            "middleName" -> user.middleName.get,
-            "lastName" -> user.lastName.get
+            "user" -> Json.toJson(user).toString,
           )
         )
       )

@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
+import play.api.libs.json.Json
 import uk.gov.hmrc.anothertaxfrontend.forms.UserForm
 import uk.gov.hmrc.anothertaxfrontend.forms.UserForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.EduBoolPage
@@ -33,7 +34,19 @@ class EduBoolController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    val filledForm = form.bindFromRequest()
-    Future.successful(Ok(eduPage(filledForm)))
+    Future.successful(Ok(eduPage(UserForm.form)))
+  }
+
+  def post: Action[AnyContent] = Action.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors))),
+        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
+          .addingToSession(
+            "user" -> Json.toJson(user).toString,
+          )
+        )
+      )
   }
 }

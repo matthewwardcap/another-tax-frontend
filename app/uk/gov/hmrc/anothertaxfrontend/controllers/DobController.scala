@@ -22,7 +22,7 @@ import uk.gov.hmrc.anothertaxfrontend.views.html.DobPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
-
+import play.api.libs.json._
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -33,8 +33,19 @@ class DobController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    //val x = form.data.getOrElse("first-name", "wrong")
-    val filledForm = form.bindFromRequest()
-    Future.successful(Ok(dobPage(filledForm)))
+    Future.successful(Ok(dobPage(UserForm.form)))
+  }
+
+  def post: Action[AnyContent] = Action.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(dobPage(formWithErrors))),
+        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show)
+          .addingToSession(
+            "user" -> Json.toJson(user).toString,
+          )
+        )
+      )
   }
 }

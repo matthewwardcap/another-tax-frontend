@@ -17,6 +17,9 @@
 package uk.gov.hmrc.anothertaxfrontend.models
 
 import java.util.Date
+import play.api.libs.json._
+import play.api.libs.json.Reads._
+import play.api.libs.functional.syntax._
 
 case class User(
                  firstName:Option[String],
@@ -31,6 +34,10 @@ case class User(
 
 
 object User {
+  //implicit val userReads: Reads[User] = Json.reads[User]
+  //implicit val userWrites: OWrites[User] = Json.writes[User]
+  implicit val format: OFormat[User] = Json.format[User]
+
   val firstName         = "firstName"
   val middleName        = "middleName"
   val lastName          = "lastName"
