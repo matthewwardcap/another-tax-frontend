@@ -18,7 +18,7 @@ package uk.gov.hmrc.anothertaxfrontend.controllers
 
 import uk.gov.hmrc.anothertaxfrontend.forms.UserForm
 import uk.gov.hmrc.anothertaxfrontend.forms.UserForm._
-import uk.gov.hmrc.anothertaxfrontend.views.html.DobPage
+import uk.gov.hmrc.anothertaxfrontend.views.html.EduBoolPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
@@ -27,14 +27,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class DobController @Inject()(
-                                      mcc: MessagesControllerComponents,
-                                      dobPage: DobPage)
+class EduBoolController @Inject()(
+                               mcc: MessagesControllerComponents,
+                               eduPage: EduBoolPage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    //val x = form.data.getOrElse("first-name", "wrong")
     val filledForm = form.bindFromRequest()
-    Future.successful(Ok(dobPage(filledForm)))
+    Future.successful(Ok(eduPage(filledForm)))
   }
 }

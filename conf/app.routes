@@ -2,6 +2,12 @@
 
 ->         /hmrc-frontend           hmrcfrontend.Routes
 GET        /                        uk.gov.hmrc.anothertaxfrontend.controllers.HelloWorldController.helloWorld
-GET        /name                    uk.gov.hmrc.anothertaxfrontend.controllers.NameController.name
-GET        /dob                     uk.gov.hmrc.anothertaxfrontend.controllers.DobController.dob
+
+GET        /name                    uk.gov.hmrc.anothertaxfrontend.controllers.NameController.show
+GET        /name-post               uk.gov.hmrc.anothertaxfrontend.controllers.NameController.post
+
+GET        /dob                     uk.gov.hmrc.anothertaxfrontend.controllers.DobController.show
+
+GET        /edu-bool                uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.show
+
 GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)

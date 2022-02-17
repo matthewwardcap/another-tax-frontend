@@ -23,13 +23,13 @@ import uk.gov.hmrc.anothertaxfrontend.models.User._
 
 object UserForm {
   val form: Form[User] = Form(mapping(
-    firstName -> nonEmptyText,
-    middleName -> nonEmptyText,
-    lastName -> nonEmptyText,
-    dob -> date,
-    education -> boolean,
-    educationDate -> date,
-    employmentStatus -> nonEmptyText,
-    salary -> bigDecimal
+    firstName -> optional(nonEmptyText),
+    middleName -> optional(nonEmptyText),
+    lastName -> optional(nonEmptyText),
+    dob -> optional(date),
+    education -> optional(boolean),
+    educationDate -> optional(date),
+    employmentStatus -> optional(nonEmptyText),
+    salary -> optional(bigDecimal)
   )(User.apply)(User.unapply))
 }

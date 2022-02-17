@@ -19,14 +19,14 @@ package uk.gov.hmrc.anothertaxfrontend.models
 import java.util.Date
 
 case class User(
-                 firstName:String,
-                 middleName:String,
-                 lastName:String,
-                 dob:Date,
-                 education:Boolean,
-                 educationDate:Date,
-                 employmentStatus:String,
-                 salary:BigDecimal
+                 firstName:Option[String],
+                 middleName:Option[String],
+                 lastName:Option[String],
+                 dob:Option[Date],
+                 education:Option[Boolean],
+                 educationDate:Option[Date],
+                 employmentStatus:Option[String],
+                 salary:Option[BigDecimal]
                )
 
 

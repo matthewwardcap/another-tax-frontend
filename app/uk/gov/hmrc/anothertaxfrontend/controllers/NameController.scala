@@ -36,12 +36,22 @@ class NameController @Inject()(
     Future.successful(Ok(namePage(UserForm.form)))
   }
 
+  def show: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(namePage(UserForm.form)))
+  }
+
   def post: Action[AnyContent] = Action.async { implicit request =>
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(namePage(formWithErrors))),
-        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.dob))
+        user => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show)
+          .addingToSession(
+            "firstName" -> user.firstName.get,
+            "middleName" -> user.middleName.get,
+            "lastName" -> user.lastName.get
+          )
+        )
       )
   }
 }

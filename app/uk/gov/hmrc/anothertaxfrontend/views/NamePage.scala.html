@@ -25,7 +25,7 @@
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("namePage.title")}</h1>
 
-    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.dob) {
+    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.post) {
         @govukInput(Input(
             id = "width-20",
             name = "firstName",
@@ -52,7 +52,7 @@
         ))
 
         @govukButton(Button(
-            content = Text("Save and continue")
+            content = Text(messages("button.save"))
         ))
     }
 }
