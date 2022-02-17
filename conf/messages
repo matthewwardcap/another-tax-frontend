@@ -1,7 +1,14 @@
 service.name = Another Tax Service
 service.text = Enter your current education and annual salary to see what you're required to pay for the new Another Tax
 
+button.start = Start now
 button.save = Save and continue
+
+date.example = For example, 31 3 1980
+
+radio.no = No
+radio.yes = Yes
+radio.error = Select an option
 
 namePage.title = Enter your name
 namePage.firstName = First Name
@@ -10,4 +17,4 @@ namePage.lastName = Last Name
 
 dobPage.title = Enter your date of birth
 
-educationBoolPage.title = Are you still in education
+eduBoolPage.title = Are you still in education

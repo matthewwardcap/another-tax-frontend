@@ -21,22 +21,22 @@
 @(form: play.api.data.Form[User])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
-    <h1 class="govuk-heading-xl">@{messages("educationBoolPage.title")}</h1>
+    <h1 class="govuk-heading-xl">@{messages("eduBoolPage.title")}</h1>
 
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld) {
         @govukRadios(Radios(
             errorMessage = Some(ErrorMessage(
-                content = Text("Select an option")
+                content = Text(messages("radio.error"))
             )),
             idPrefix = Some("education"),
             name = "education",
             items = Seq(
                 RadioItem(
-                    content = Text("No"),
+                    content = Text(messages("radio.no")),
                     value = Some("false")
                 ),
                 RadioItem(
-                    content = Text("Yes"),
+                    content = Text(messages("radio.yes")),
                     value = Some("true")
                 )
             )
@@ -47,7 +47,7 @@
         <input type="hidden" name="lastName" value="@form.data.get("lastName")"/>
 
         @govukButton(Button(
-            content = Text("Save and continue")
+            content = Text(messages("button.save"))
         ))
     }
 }

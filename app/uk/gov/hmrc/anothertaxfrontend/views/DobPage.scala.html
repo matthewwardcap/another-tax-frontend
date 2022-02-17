@@ -45,11 +45,11 @@
                 )
             ),
             hint = Some(Hint(
-                content = Text("For example, 31 3 1980")
+                content = Text(messages("date.example"))
             )),
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
-                    content = Text("What is your date of birth?"),
+                    content = Text(messages("dobPage.title")),
                     classes = "govuk-fieldset__legend--l",
                     isPageHeading = true
                 ))
@@ -65,7 +65,7 @@
         <input type="hidden" name="lastName" value="@form.data.get("lastName")"/>
 
         @govukButton(Button(
-            content = Text("Save and continue")
+            content = Text(messages("button.save"))
         ))
     }
 }
