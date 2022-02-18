@@ -5,6 +5,7 @@ button.start = Start now
 button.save = Save and continue
 
 date.example = For example, 31 3 1980
+eduDate.example = For example, 31 3 2005
 
 radio.no = No
 radio.yes = Yes
@@ -17,4 +18,6 @@ namePage.lastName = Last Name
 
 dobPage.title = Enter your date of birth
 
-eduBoolPage.title = Are you still in education
+eduBoolPage.title = Are you still in education?
+
+eduDatePage.title = What year did you finish education?

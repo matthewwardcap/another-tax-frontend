@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
+import play.api.libs.json.Json
 import uk.gov.hmrc.anothertaxfrontend.views.html.HelloWorldPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.anothertaxfrontend.models.User
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -30,5 +33,14 @@ class HelloWorldController @Inject()(
 
   val helloWorld: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok(helloWorldPage()))
+  }
+
+  def post: Action[AnyContent] = Action.async { implicit request =>
+    val user = User(None, None, None, None, None, None, None, None)
+    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.show)
+      .addingToSession(
+        "user" -> Json.toJson(user.copy()).toString
+      )
+    )
   }
 }

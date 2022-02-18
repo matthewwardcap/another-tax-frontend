@@ -16,41 +16,38 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.NameForm
-import uk.gov.hmrc.anothertaxfrontend.forms.NameForm._
-import uk.gov.hmrc.anothertaxfrontend.models.User._
-import uk.gov.hmrc.anothertaxfrontend.models.User
-import uk.gov.hmrc.anothertaxfrontend.views.html.NamePage
-import uk.gov.hmrc.anothertaxfrontend.controllers.DobController
+import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm
+import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm._
+import uk.gov.hmrc.anothertaxfrontend.views.html.EduDatePage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class NameController @Inject()(
-                                      mcc: MessagesControllerComponents,
-                                      namePage: NamePage)
+class EduDateController @Inject()(
+                               mcc: MessagesControllerComponents,
+                               eduDatePage: EduDatePage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(namePage(NameForm.form)))
+    Future.successful(Ok(eduDatePage(EduDateForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(namePage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show)
+        formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors))),
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
-              Option(dataForm.firstName),
-              dataForm.middleName,
-              Option(dataForm.lastName))
-            )).toString
+              educationDate = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
+            ))).toString
           )
         )
       )

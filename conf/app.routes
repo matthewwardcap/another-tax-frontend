@@ -2,6 +2,7 @@
 
 ->         /hmrc-frontend           hmrcfrontend.Routes
 GET        /                        uk.gov.hmrc.anothertaxfrontend.controllers.HelloWorldController.helloWorld
+GET        /post                    uk.gov.hmrc.anothertaxfrontend.controllers.HelloWorldController.post
 
 GET        /name                    uk.gov.hmrc.anothertaxfrontend.controllers.NameController.show
 GET        /name-post               uk.gov.hmrc.anothertaxfrontend.controllers.NameController.post
@@ -11,5 +12,8 @@ GET        /dob-post                uk.gov.hmrc.anothertaxfrontend.controllers.D
 
 GET        /edu-bool                uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.show
 GET        /edu-bool-post           uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.post
+
+GET        /edu-date                uk.gov.hmrc.anothertaxfrontend.controllers.EduDateController.show
+GET        /edu-date-post           uk.gov.hmrc.anothertaxfrontend.controllers.EduDateController.post
 
 GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)

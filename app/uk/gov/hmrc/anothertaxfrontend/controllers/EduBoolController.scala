@@ -43,7 +43,7 @@ class EduBoolController @Inject()(
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
               education = Option(dataForm.education)

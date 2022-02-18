@@ -24,7 +24,7 @@
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("eduBoolPage.title")}</h1>
 
-    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld) {
+    @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.post) {
         @govukRadios(Radios(
             errorMessage = Some(ErrorMessage(
                 content = Text(messages("radio.error"))
