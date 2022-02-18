@@ -16,39 +16,26 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.SalaryForm
-import uk.gov.hmrc.anothertaxfrontend.forms.SalaryForm._
-import uk.gov.hmrc.anothertaxfrontend.views.html.SalaryPage
+import uk.gov.hmrc.anothertaxfrontend.models.User._
+import uk.gov.hmrc.anothertaxfrontend.models.User
+import uk.gov.hmrc.anothertaxfrontend.views.html.SummaryPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class SalaryController @Inject()(
-                               mcc: MessagesControllerComponents,
-                               salaryPage: SalaryPage)
+class SummaryController @Inject()(
+                                mcc: MessagesControllerComponents,
+                                summaryPage: SummaryPage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(salaryPage(SalaryForm.form)))
+    Future.successful(Ok(summaryPage()))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
-    val user = request.session.get("user").map(user => Json.parse(user).as[User])
-    form
-      .bindFromRequest()
-      .fold(
-        formWithErrors => Future.successful(BadRequest(salaryPage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show)
-          .addingToSession(
-            "user" -> Json.toJson(user.map(us => us.copy(
-              salary = Option(dataForm.salary)
-            ))).toString
-          )
-        )
-      )
+    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld))
   }
 }

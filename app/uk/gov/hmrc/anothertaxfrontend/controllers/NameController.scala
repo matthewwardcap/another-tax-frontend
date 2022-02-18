@@ -21,7 +21,6 @@ import uk.gov.hmrc.anothertaxfrontend.forms.NameForm._
 import uk.gov.hmrc.anothertaxfrontend.models.User._
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import uk.gov.hmrc.anothertaxfrontend.views.html.NamePage
-import uk.gov.hmrc.anothertaxfrontend.controllers.DobController
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import play.api.libs.json._

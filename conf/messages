@@ -29,3 +29,11 @@ radio.partTime = Part Time Employment
 
 salaryPage.title = What is your annual salary?
 salaryPage.text = Annual salary - The amount you earn each year before tax
+
+summaryPage.title = Check your answers
+list.name = Name
+list.dob = Date of Birth
+list.eduBool = Still in education
+list.eduDate = Education finish date
+list.emp = Employment Status
+list.salary = Salary
