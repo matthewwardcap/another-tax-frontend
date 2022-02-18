@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm
-import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm._
-import uk.gov.hmrc.anothertaxfrontend.views.html.EduDatePage
+import uk.gov.hmrc.anothertaxfrontend.forms.SalaryForm
+import uk.gov.hmrc.anothertaxfrontend.forms.SalaryForm._
+import uk.gov.hmrc.anothertaxfrontend.views.html.SalaryPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
@@ -27,26 +27,25 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class EduDateController @Inject()(
+class SalaryController @Inject()(
                                mcc: MessagesControllerComponents,
-                               eduDatePage: EduDatePage)
+                               salaryPage: SalaryPage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(eduDatePage(EduDateForm.form)))
+    Future.successful(Ok(salaryPage(SalaryForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show)
+        formWithErrors => Future.successful(BadRequest(salaryPage(formWithErrors))),
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
-              educationDate = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
+              salary = Option(dataForm.salary)
             ))).toString
           )
         )

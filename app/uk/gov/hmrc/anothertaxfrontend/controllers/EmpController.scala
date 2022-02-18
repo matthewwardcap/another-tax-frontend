@@ -16,37 +16,37 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm
-import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm._
-import uk.gov.hmrc.anothertaxfrontend.views.html.EduDatePage
+import play.api.libs.json.Json
+import uk.gov.hmrc.anothertaxfrontend.forms.EmpForm
+import uk.gov.hmrc.anothertaxfrontend.forms.EmpForm._
+import uk.gov.hmrc.anothertaxfrontend.views.html.EmpPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
-import play.api.libs.json._
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class EduDateController @Inject()(
-                               mcc: MessagesControllerComponents,
-                               eduDatePage: EduDatePage)
+class EmpController @Inject()(
+                                   mcc: MessagesControllerComponents,
+                                   empPage: EmpPage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(eduDatePage(EduDateForm.form)))
+    Future.successful(Ok(empPage(EmpForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show)
+        formWithErrors => Future.successful(BadRequest(empPage(formWithErrors))),
+        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
-              educationDate = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
+              employmentStatus = Option(dataForm.employmentStatus)
             ))).toString
           )
         )

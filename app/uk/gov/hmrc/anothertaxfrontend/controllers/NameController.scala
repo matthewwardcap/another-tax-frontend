@@ -49,8 +49,8 @@ class NameController @Inject()(
             "user" -> Json.toJson(user.map(us => us.copy(
               Option(dataForm.firstName),
               dataForm.middleName,
-              Option(dataForm.lastName))
-            )).toString
+              Option(dataForm.lastName)
+            ))).toString
           )
         )
       )
