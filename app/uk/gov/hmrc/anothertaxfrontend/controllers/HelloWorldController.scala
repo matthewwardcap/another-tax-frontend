@@ -37,9 +37,11 @@ class HelloWorldController @Inject()(
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = User(None, None, None, None, None, None, None, None)
+    val summary = false
     Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.show)
       .addingToSession(
-        "user" -> Json.toJson(user.copy()).toString
+        "user" -> Json.toJson(user.copy()).toString,
+        "summary" -> Json.toJson(summary).toString
       )
     )
   }

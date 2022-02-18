@@ -32,7 +32,8 @@ class SummaryController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(summaryPage()))
+    val summary = true
+    Future.successful(Ok(summaryPage()).addingToSession("summary" -> Json.toJson(summary).toString))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
