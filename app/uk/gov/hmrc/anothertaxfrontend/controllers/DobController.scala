@@ -28,8 +28,8 @@ import scala.concurrent.Future
 
 @Singleton
 class DobController @Inject()(
-                                      mcc: MessagesControllerComponents,
-                                      dobPage: DobPage)
+                               mcc: MessagesControllerComponents,
+                               dobPage: DobPage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
@@ -53,12 +53,3 @@ class DobController @Inject()(
       )
   }
 }
-
-/*
-.addingToSession(
-"user" -> Json.toJson(user.copy(
-dob = Option(format.parse(dataForm.day.toString+dataForm.month.toString+dataForm.year.toString))
-)
-).toString
-)
-*/

@@ -38,18 +38,16 @@ class EduBoolController @Inject()(
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
-    val user: User = Json.toJson(request.session.get("user")).as[User]
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    val user = request.session.get("user").map(user => Json.parse(user).as[User])
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors))),
         dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld)
           .addingToSession(
-            "user" -> Json.toJson(user.copy(
+            "user" -> Json.toJson(user.map(us => us.copy(
               education = Option(dataForm.education)
-            )
-            ).toString
+            ))).toString
           )
         )
       )

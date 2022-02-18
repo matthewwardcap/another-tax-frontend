@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.anothertaxfrontend.views.html.Layout
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.anothertaxfrontend.models.User
 @import uk.gov.hmrc.anothertaxfrontend.forms.EduBoolData
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukRadios : GovukRadios)
@@ -43,10 +42,6 @@
                 )
             )
         ))
-
-        <input type="hidden" name="firstName" value="@form.data.get("firstName")"/>
-        <input type="hidden" name="middleName" value="@form.data.get("middleName")"/>
-        <input type="hidden" name="lastName" value="@form.data.get("lastName")"/>
 
         @govukButton(Button(
             content = Text(messages("button.save"))
