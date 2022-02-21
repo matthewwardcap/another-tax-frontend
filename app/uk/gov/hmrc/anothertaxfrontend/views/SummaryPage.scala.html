@@ -37,6 +37,11 @@
     first + " " + second + " " + third
 }
 
+@inEducation = @{user.education match {
+    case None => ""
+    case Some(value) =>
+}}
+
 @formatType = @{"dd-MM-YYYY"}
 
 @layout(pageTitle = Some(messages("service.name"))) {
@@ -113,11 +118,13 @@
                 ),
                 actions = Some(Actions(
                     items = Seq(
-                        ActionItem(
-                            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show.url,
-                            content = Text("Change"),
-                            visuallyHiddenText = Some("date leaving education")
-                        )
+                        if (user.education.getOrElse(false)) {
+                            ActionItem(
+                                href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show.url,
+                                content = Text("Change"),
+                                visuallyHiddenText = Some("date leaving education")
+                            )
+                        } else ActionItem()
                     )
                 ))
             ),
@@ -153,11 +160,13 @@
                 ),
                 actions = Some(Actions(
                     items = Seq(
-                        ActionItem(
-                            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url,
-                            content = Text("Change"),
-                            visuallyHiddenText = Some("salary")
-                        )
+                        if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed") {
+                            ActionItem(
+                                href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url,
+                                content = Text("Change"),
+                                visuallyHiddenText = Some("salary")
+                            )
+                        } else ActionItem()
                     )
                 ))
             )

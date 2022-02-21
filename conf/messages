@@ -25,8 +25,8 @@ eduDatePage.title = What year did you finish education?
 
 empPage.title = What is your employment status?
 radio.unemployed = Unemployed
-radio.fullTime = Full Time Employment
-radio.partTime = Part Time Employment
+radio.fullTime = Full-time Employment
+radio.partTime = Part-time Employment
 
 salaryPage.title = What is your annual salary?
 salaryPage.text = Annual salary - The amount you earn each year before tax
