@@ -40,9 +40,8 @@ class EmpController @Inject()(
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show else
-      uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
-    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+    val controllerRoute = if (!summary) routes.SalaryController.show else routes.SummaryController.show
+    val homeRoute = routes.HelloWorldController.helloWorld
 
     request.session.get("user") match {
       case None => Future.successful(Redirect(homeRoute))
@@ -52,11 +51,15 @@ class EmpController @Inject()(
           form.bindFromRequest().fold(
             formWithErrors => Future.successful(BadRequest(empPage(formWithErrors, summary))),
             dataForm => {
-              val updatedUser = user.copy(employmentStatus = Option(dataForm.employmentStatus))
-              val updatedUserAsJson = Json.toJson(updatedUser).toString()
-
-              Future.successful(Redirect(controllerRoute).addingToSession("user" -> updatedUserAsJson)
-              )
+              if (dataForm.employmentStatus == "Unemployed") {
+                val updatedUser = user.copy(employmentStatus = Option(dataForm.employmentStatus), salary = None)
+                val updatedUserAsJson = Json.toJson(updatedUser).toString()
+                Future.successful(Redirect(routes.SummaryController.show).addingToSession("user" -> updatedUserAsJson))
+              } else {
+                val updatedUser = user.copy(employmentStatus = Option(dataForm.employmentStatus))
+                val updatedUserAsJson = Json.toJson(updatedUser).toString()
+                Future.successful(Redirect(routes.SalaryController.show).addingToSession("user" -> updatedUserAsJson))
+              }
             }
           )
       }
@@ -64,6 +67,16 @@ class EmpController @Inject()(
   }
 
   def back: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show))
+    val homeRoute = routes.HelloWorldController.helloWorld
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) => user.educationDate match {
+          case None => Future.successful(Redirect(routes.EduBoolController.show))
+          case Some(value) => Future.successful(Redirect(routes.EduDateController.show))
+        }
+      }
+    }
   }
 }
