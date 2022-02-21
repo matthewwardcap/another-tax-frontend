@@ -38,6 +38,7 @@ class SalaryController @Inject()(
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
+    val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
     form
       .bindFromRequest()
       .fold(

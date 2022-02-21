@@ -39,8 +39,13 @@ class NameController @Inject()(
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
+    /*
+    request.session.get("user").map(user => Json.parse(user).as[User]) match {
+      case None => uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+      case Some(user) => rest of code here
+    }
+    */
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    //val summary = request.session.get("summary").map(summary => Json.parse(summary).as[Boolean]).get
     val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show else
       uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
     form

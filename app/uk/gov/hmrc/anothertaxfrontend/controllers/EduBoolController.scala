@@ -39,11 +39,14 @@ class EduBoolController @Inject()(
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
+    val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
+    val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show else
+      uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show)
+        dataForm => Future.successful(Redirect(controllerRoute)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
               education = Option(dataForm.education)

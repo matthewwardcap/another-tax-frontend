@@ -39,11 +39,14 @@ class DobController @Inject()(
   def post: Action[AnyContent] = Action.async { implicit request =>
     val user = request.session.get("user").map(user => Json.parse(user).as[User])
     val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
+    val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show else
+      uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
     form
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(dobPage(formWithErrors))),
-        dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show)
+        dataForm => Future.successful(Redirect(controllerRoute)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
               dob = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
