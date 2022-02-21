@@ -34,7 +34,18 @@ class SalaryController @Inject()(
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    Future.successful(Ok(salaryPage(SalaryForm.form, summary)))
+    val homeRoute = routes.HelloWorldController.helloWorld
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) => if (user.employmentStatus.isDefined) {
+          if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed") {
+            Future.successful(Ok(salaryPage(SalaryForm.form, summary)))
+          } else Future.successful(Redirect(routes.SummaryController.show))
+        } else  Future.successful(Redirect(routes.EmpController.show))
+      }
+    }
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>

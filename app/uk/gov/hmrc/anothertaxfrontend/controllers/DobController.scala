@@ -34,7 +34,16 @@ class DobController @Inject()(
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    Future.successful(Ok(dobPage(DobForm.form, summary)))
+    val homeRoute = routes.HelloWorldController.helloWorld
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) => if (user.firstName.isDefined) {
+          Future.successful(Ok(dobPage(DobForm.form, summary)))
+        } else Future.successful(Redirect(routes.NameController.show))
+      }
+    }
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>

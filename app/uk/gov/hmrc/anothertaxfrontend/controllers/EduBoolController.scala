@@ -35,7 +35,16 @@ class EduBoolController @Inject()(
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    Future.successful(Ok(eduPage(EduBoolForm.form, summary)))
+    val homeRoute = routes.HelloWorldController.helloWorld
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) => if (user.dob.isDefined) {
+          Future.successful(Ok(eduPage(EduBoolForm.form, summary)))
+        } else  Future.successful(Redirect(routes.DobController.show))
+      }
+    }
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>

@@ -35,7 +35,19 @@ class EmpController @Inject()(
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    Future.successful(Ok(empPage(EmpForm.form, summary)))
+    val homeRoute = routes.HelloWorldController.helloWorld
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) =>
+          if (user.education.isDefined) {
+            if (user.education.getOrElse(false) && user.educationDate.isEmpty) {
+              Future.successful(Redirect(routes.EduDateController.show))
+            } else Future.successful(Ok(empPage(EmpForm.form, summary)))
+          } else Future.successful(Redirect(routes.EduBoolController.show))
+      }
+    }
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>

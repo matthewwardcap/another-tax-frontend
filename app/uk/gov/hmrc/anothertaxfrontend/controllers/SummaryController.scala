@@ -32,19 +32,27 @@ class SummaryController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    val summary = true
-    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+    val homeRoute = routes.HelloWorldController.helloWorld
 
     request.session.get("user") match {
       case None => Future.successful(Redirect(homeRoute))
       case Some(userString) => Json.parse(userString).asOpt[User] match {
         case None => Future.successful(Redirect(homeRoute))
-        case Some(user) => Future.successful(Ok(summaryPage(user)).addingToSession("summary" -> Json.toJson(summary).toString))
+        case Some(user) => if (user.firstName.isEmpty || user.lastName.isEmpty || user.dob.isEmpty || user.education.isEmpty || user.employmentStatus.isEmpty) {
+          Future.successful(Redirect(routes.EmpController.show))
+        } else if (user.education.getOrElse(false) && user.educationDate.isEmpty) {
+          Future.successful(Redirect(routes.EduDateController.show))
+        } else if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed" && user.salary.isEmpty) {
+          Future.successful(Redirect(routes.SalaryController.show))
+        } else {
+          val summary = true
+          Future.successful(Ok(summaryPage(user)).addingToSession("summary" -> Json.toJson(summary).toString))
+        }
       }
     }
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld))
+    Future.successful(Redirect(routes.HelloWorldController.helloWorld))
   }
 }
