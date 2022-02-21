@@ -16,9 +16,28 @@
 
 @import uk.gov.hmrc.anothertaxfrontend.views.html.Layout
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.anothertaxfrontend.models.User
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukSummaryList : GovukSummaryList)
-@()(implicit request: Request[_], messages: Messages)
+@(user: User)(implicit request: Request[_], messages: Messages)
+
+@name = @{
+    val first = user.firstName match {
+        case None => ""
+        case Some(value) => value
+    }
+    val second = user.middleName match {
+        case None => ""
+        case Some(value) => value
+    }
+    val third = user.lastName match {
+        case None => ""
+        case Some(value) => value
+    }
+    first + " " + second + " " + third
+}
+
+@formatType = @{"dd-MM-YYYY"}
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("summaryPage.title")}</h1>
@@ -30,7 +49,7 @@
                     content = Text(messages("list.name"))
                 ),
                 value = Value(
-                    content = Text("Sarah Philips")
+                    content = Text(name)
                 ),
                 actions = Some(Actions(
                     items = Seq(
@@ -47,7 +66,10 @@
                     content = Text(messages("list.dob"))
                 ),
                 value = Value(
-                    content = Text("5 January 1978")
+                    content = Text(user.dob match {
+                        case None => ""
+                        case Some(value) => value.format(formatType)
+                    })
                 ),
                 actions = Some(Actions(
                     items = Seq(
@@ -64,14 +86,17 @@
                     content = Text(messages("list.eduBool"))
                 ),
                 value = Value(
-                    content = HtmlContent("""72 Guild Street<br>London<br>SE23 6FH""")
+                    content = Text(user.education match {
+                        case None => ""
+                        case Some(value) => if (value) "Yes" else "No"
+                    })
                 ),
                 actions = Some(Actions(
                     items = Seq(
                         ActionItem(
                             href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show.url,
                             content = Text("Change"),
-                            visuallyHiddenText = Some("contact information")
+                            visuallyHiddenText = Some("still in education")
                         )
                     )
                 ))
@@ -81,14 +106,17 @@
                     content = Text(messages("list.eduDate"))
                 ),
                 value = Value(
-                    content = HtmlContent("""<p class="govuk-body">07700 900457</p><p class="govuk-body">sarah.phillips@example.com</p>""")
+                    content = Text(user.educationDate match {
+                        case None => ""
+                        case Some(value) => value.format(formatType)
+                    })
                 ),
                 actions = Some(Actions(
                     items = Seq(
                         ActionItem(
                             href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show.url,
                             content = Text("Change"),
-                            visuallyHiddenText = Some("contact details")
+                            visuallyHiddenText = Some("date leaving education")
                         )
                     )
                 ))
@@ -98,14 +126,17 @@
                     content = Text(messages("list.emp"))
                 ),
                 value = Value(
-                    content = HtmlContent("""<p class="govuk-body">07700 900457</p><p class="govuk-body">sarah.phillips@example.com</p>""")
+                    content = Text(user.employmentStatus match {
+                        case None => ""
+                        case Some(value) => value
+                    })
                 ),
                 actions = Some(Actions(
                     items = Seq(
                         ActionItem(
                             href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show.url,
                             content = Text("Change"),
-                            visuallyHiddenText = Some("contact details")
+                            visuallyHiddenText = Some("employment status")
                         )
                     )
                 ))
@@ -115,14 +146,17 @@
                     content = Text(messages("list.salary"))
                 ),
                 value = Value(
-                    content = HtmlContent("""<p class="govuk-body">07700 900457</p><p class="govuk-body">sarah.phillips@example.com</p>""")
+                    content = Text(user.salary match {
+                        case None => ""
+                        case Some(value) => "£" + value.toString()
+                    })
                 ),
                 actions = Some(Actions(
                     items = Seq(
                         ActionItem(
                             href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url,
                             content = Text("Change"),
-                            visuallyHiddenText = Some("contact details")
+                            visuallyHiddenText = Some("salary")
                         )
                     )
                 ))

@@ -17,15 +17,14 @@
 package uk.gov.hmrc.anothertaxfrontend.forms
 import play.api.data.Forms._
 import play.api.data.Form
-import play.api.data.validation.Constraints._
 
 case class SalaryData(
-                    salary:BigDecimal,
+                       salary:BigDecimal,
                   )
 
 object SalaryForm {
   val form: Form[SalaryData] = Form(mapping(
-    "salary" -> bigDecimal,
+    "salary" -> bigDecimal(32,2),
   )(SalaryData.apply)(SalaryData.unapply)
   )
 }

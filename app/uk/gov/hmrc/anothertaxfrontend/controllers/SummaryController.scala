@@ -33,7 +33,15 @@ class SummaryController @Inject()(
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     val summary = true
-    Future.successful(Ok(summaryPage()).addingToSession("summary" -> Json.toJson(summary).toString))
+    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) => Future.successful(Ok(summaryPage(user)).addingToSession("summary" -> Json.toJson(summary).toString))
+      }
+    }
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
