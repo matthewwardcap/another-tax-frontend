@@ -38,23 +38,30 @@ class EduDateController @Inject()(
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
-    val user = request.session.get("user").map(user => Json.parse(user).as[User])
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
     val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show else
       uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
-    form
-      .bindFromRequest()
-      .fold(
-        formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors, summary))),
-        dataForm => Future.successful(Redirect(controllerRoute)
-          .addingToSession(
-            "user" -> Json.toJson(user.map(us => us.copy(
-              educationDate = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
-            ))).toString
+    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) =>
+          form.bindFromRequest().fold(
+            formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors, summary))),
+            dataForm => {
+              val date = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
+              val updatedUser = user.copy(educationDate = date)
+              val updatedUserAsJson = Json.toJson(updatedUser).toString()
+
+              Future.successful(Redirect(controllerRoute).addingToSession("user" -> updatedUserAsJson)
+              )
+            }
           )
-        )
-      )
+      }
+    }
   }
 
   def back: Action[AnyContent] = Action.async { implicit request =>

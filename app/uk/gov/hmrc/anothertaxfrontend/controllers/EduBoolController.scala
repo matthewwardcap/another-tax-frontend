@@ -39,22 +39,28 @@ class EduBoolController @Inject()(
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
-    val user = request.session.get("user").map(user => Json.parse(user).as[User])
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
     val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show else
       uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
-    form
-      .bindFromRequest()
-      .fold(
-        formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors, summary))),
-        dataForm => Future.successful(Redirect(controllerRoute)
-          .addingToSession(
-            "user" -> Json.toJson(user.map(us => us.copy(
-              education = Option(dataForm.education)
-            ))).toString
+    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) =>
+          form.bindFromRequest().fold(
+            formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors, summary))),
+            dataForm => {
+              val updatedUser = user.copy(education = Option(dataForm.education))
+              val updatedUserAsJson = Json.toJson(updatedUser).toString()
+
+              Future.successful(Redirect(controllerRoute).addingToSession("user" -> updatedUserAsJson)
+              )
+            }
           )
-        )
-      )
+      }
+    }
   }
 
   def back: Action[AnyContent] = Action.async { implicit request =>
