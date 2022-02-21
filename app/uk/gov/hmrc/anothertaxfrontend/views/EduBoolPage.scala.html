@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.anothertaxfrontend.forms.EduBoolData
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukRadios : GovukRadios, govukBackLink: GovukBackLink)
-@(form: play.api.data.Form[EduBoolData], summary: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[EduBoolData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("eduBoolPage.title")}</h1>

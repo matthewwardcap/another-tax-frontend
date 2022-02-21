@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.anothertaxfrontend.forms.SalaryData
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukInput : GovukInput, govukBackLink: GovukBackLink)
-@(form: play.api.data.Form[SalaryData], summary: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[SalaryData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("salaryPage.title")}</h1>

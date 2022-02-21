@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.anothertaxfrontend.forms.DobData
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukDateInput : GovukDateInput, govukBackLink: GovukBackLink)
-@(form: play.api.data.Form[DobData], summary: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[DobData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("dobPage.title")}</h1>

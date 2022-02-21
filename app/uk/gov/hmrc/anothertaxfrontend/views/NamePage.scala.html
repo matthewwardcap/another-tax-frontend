@@ -20,7 +20,7 @@
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukInput : GovukInput)
 
-@(form: play.api.data.Form[Data])(implicit request: Request[_], messages: Messages)
+@(form: Form[Data])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("namePage.title")}</h1>
