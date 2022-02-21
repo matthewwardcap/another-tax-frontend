@@ -33,7 +33,8 @@ class EduDateController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(eduDatePage(EduDateForm.form)))
+    val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
+    Future.successful(Ok(eduDatePage(EduDateForm.form, summary)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
@@ -45,7 +46,7 @@ class EduDateController @Inject()(
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors, summary))),
         dataForm => Future.successful(Redirect(controllerRoute)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
@@ -54,5 +55,9 @@ class EduDateController @Inject()(
           )
         )
       )
+  }
+
+  def back: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show))
   }
 }

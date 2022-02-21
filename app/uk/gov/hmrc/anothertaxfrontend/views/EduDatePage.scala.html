@@ -18,8 +18,8 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.anothertaxfrontend.forms.EduDateData
 
-@this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukDateInput : GovukDateInput)
-@(form: play.api.data.Form[EduDateData])(implicit request: Request[_], messages: Messages)
+@this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukDateInput : GovukDateInput, govukBackLink: GovukBackLink)
+@(form: play.api.data.Form[EduDateData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("eduDatePage.title")}</h1>
@@ -58,6 +58,12 @@
 
         @govukButton(Button(
             content = Text(messages("button.save"))
+        ))
+    }
+    @if(!summary) {
+        @govukBackLink(BackLink(
+            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.back.url,
+            content = Text(messages("button.back"))
         ))
     }
 }

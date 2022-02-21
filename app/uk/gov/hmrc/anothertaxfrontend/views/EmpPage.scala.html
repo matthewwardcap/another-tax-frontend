@@ -18,8 +18,8 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.anothertaxfrontend.forms.EmpData
 
-@this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukRadios : GovukRadios)
-@(form: play.api.data.Form[EmpData])(implicit request: Request[_], messages: Messages)
+@this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukRadios : GovukRadios, govukBackLink: GovukBackLink)
+@(form: play.api.data.Form[EmpData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("empPage.title")}</h1>
@@ -49,6 +49,12 @@
 
         @govukButton(Button(
             content = Text(messages("button.save"))
+        ))
+    }
+    @if(!summary) {
+        @govukBackLink(BackLink(
+            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.back.url,
+            content = Text(messages("button.back"))
         ))
     }
 }

@@ -33,7 +33,8 @@ class SalaryController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(salaryPage(SalaryForm.form)))
+    val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
+    Future.successful(Ok(salaryPage(SalaryForm.form, summary)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
@@ -42,7 +43,7 @@ class SalaryController @Inject()(
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(salaryPage(formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(salaryPage(formWithErrors, summary))),
         dataForm => Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show)
           .addingToSession(
             "user" -> Json.toJson(user.map(us => us.copy(
@@ -51,5 +52,9 @@ class SalaryController @Inject()(
           )
         )
       )
+  }
+
+  def back: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show))
   }
 }
