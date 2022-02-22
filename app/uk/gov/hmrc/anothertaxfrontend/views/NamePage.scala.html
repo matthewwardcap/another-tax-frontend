@@ -27,6 +27,9 @@
 
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.post) {
         @govukInput(Input(
+            errorMessage = form("firstName").errors.headOption.map { e =>
+                ErrorMessage(content = Text(messages(e.message)))
+            },
             id = "width-20",
             name = "firstName",
             label = Label(
@@ -35,6 +38,9 @@
             classes = "govuk-input--width-20"
         ))
         @govukInput(Input(
+            errorMessage = form("middleName").errors.headOption.map { e =>
+                ErrorMessage(content = Text(messages(e.message)))
+            },
             id = "width-20",
             name = "middleName",
             label = Label(
@@ -43,6 +49,9 @@
             classes = "govuk-input--width-20"
         ))
         @govukInput(Input(
+            errorMessage = form("lastName").errors.headOption.map { e =>
+                ErrorMessage(content = Text(messages(e.message)))
+            },
             id = "width-20",
             name = "lastName",
             label = Label(

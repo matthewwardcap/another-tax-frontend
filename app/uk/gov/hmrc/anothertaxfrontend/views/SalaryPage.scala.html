@@ -22,10 +22,18 @@
 @(form: Form[SalaryData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
+    @if(!summary) {
+        @govukBackLink(BackLink(
+            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.back.url,
+            content = Text(messages("button.back"))
+        ))
+    }
     <h1 class="govuk-heading-xl">@{messages("salaryPage.title")}</h1>
-
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.post) {
         @govukInput(Input(
+            errorMessage = form.errors.headOption.map { e =>
+                ErrorMessage(content = Text(messages(e.message)))
+            },
             id = "salary",
             name = "salary",
             label = Label(
@@ -42,12 +50,6 @@
 
         @govukButton(Button(
             content = Text(messages("button.save"))
-        ))
-    }
-    @if(!summary) {
-        @govukBackLink(BackLink(
-            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.back.url,
-            content = Text(messages("button.back"))
         ))
     }
 }

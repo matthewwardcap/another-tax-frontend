@@ -22,8 +22,12 @@
 @(form: Form[EduDateData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
-    <h1 class="govuk-heading-xl">@{messages("eduDatePage.title")}</h1>
-
+    @if(!summary) {
+        @govukBackLink(BackLink(
+            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.back.url,
+            content = Text(messages("button.back"))
+        ))
+    }
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.post) {
         @govukDateInput(DateInput(
             id = "educationDate",
@@ -47,10 +51,13 @@
             hint = Some(Hint(
                 content = Text(messages("eduDate.example"))
             )),
+            errorMessage = form.errors.headOption.map { e =>
+                ErrorMessage(content = Text(messages(e.message)))
+            },
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
                     content = Text(messages("eduDatePage.title")),
-                    classes = "govuk-fieldset__legend--l",
+                    classes = "govuk-fieldset__legend--xl",
                     isPageHeading = true
                 ))
             ))
@@ -58,12 +65,6 @@
 
         @govukButton(Button(
             content = Text(messages("button.save"))
-        ))
-    }
-    @if(!summary) {
-        @govukBackLink(BackLink(
-            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.back.url,
-            content = Text(messages("button.back"))
         ))
     }
 }

@@ -22,13 +22,18 @@
 @(form: Form[EmpData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
+    @if(!summary) {
+        @govukBackLink(BackLink(
+            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.back.url,
+            content = Text(messages("button.back"))
+        ))
+    }
     <h1 class="govuk-heading-xl">@{messages("empPage.title")}</h1>
-
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.post) {
         @govukRadios(Radios(
-            errorMessage = Some(ErrorMessage(
-                content = Text(messages("radio.error"))
-            )),
+            errorMessage = form.errors.headOption.map { e =>
+                ErrorMessage(content = Text(messages(e.message)))
+            },
             idPrefix = Some("employmentStatus"),
             name = "employmentStatus",
             items = Seq(
@@ -49,12 +54,6 @@
 
         @govukButton(Button(
             content = Text(messages("button.save"))
-        ))
-    }
-    @if(!summary) {
-        @govukBackLink(BackLink(
-            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.back.url,
-            content = Text(messages("button.back"))
         ))
     }
 }
