@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.DobForm
+import uk.gov.hmrc.anothertaxfrontend.forms.{DobData, DobForm}
 import uk.gov.hmrc.anothertaxfrontend.forms.DobForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.DobPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -40,7 +41,13 @@ class DobController @Inject()(
       case Some(userString) => Json.parse(userString).asOpt[User] match {
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.firstName.isDefined) {
-          Future.successful(Ok(dobPage(DobForm.form, summary)))
+          val filledForm = DobData(
+            user.dob.map(day => day.getDate).getOrElse(-1),
+            user.dob.map(month => month.getMonth+1).getOrElse(-1),
+            user.dob.map(year => year.getYear+1900).getOrElse(-1)
+          )
+          val presentForm = DobForm.form.fill(filledForm)
+          Future.successful(Ok(dobPage(presentForm, summary)))
         } else Future.successful(Redirect(routes.NameController.show))
       }
     }

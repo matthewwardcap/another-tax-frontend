@@ -36,6 +36,7 @@
             },
             id = "salary",
             name = "salary",
+            value = if(form.data.getOrElse("salary", "-1.00") == "-1.00") Option("") else form.data.get("salary"),
             label = Label(
                 isPageHeading = true,
                 classes = "govuk-label--l",

@@ -39,11 +39,13 @@
             items = Seq(
                 RadioItem(
                     content = Text(messages("radio.no")),
-                    value = Some("false")
+                    value = Some("false"),
+                    checked = if(form.data.getOrElse("education", "false") != "true") true else false
                 ),
                 RadioItem(
                     content = Text(messages("radio.yes")),
-                    value = Some("true")
+                    value = Some("true"),
+                    checked = if(form.data.getOrElse("education", "false") == "true") true else false
                 )
             )
         ))

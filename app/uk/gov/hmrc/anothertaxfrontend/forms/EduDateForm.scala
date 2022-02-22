@@ -30,7 +30,7 @@ object EduDateForm {
   val form: Form[EduDateData] = Form(mapping(
     "day" -> number.verifying(min(1), max(31)),
     "month" -> number.verifying(min(1), max(12)),
-    "year" -> number.verifying(min(1900), max(Year.now.getValue))
+    "year" -> number.verifying(min(1850), max(Year.now.getValue))
   )(EduDateData.apply)(EduDateData.unapply)
   )
 }

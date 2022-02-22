@@ -39,15 +39,18 @@
             items = Seq(
                 RadioItem(
                     content = Text(messages("radio.unemployed")),
-                    value = Some("Unemployed")
+                    value = Some("Unemployed"),
+                    checked = if(form.data.getOrElse("employmentStatus", "") == "Unemployed") true else false
                 ),
                 RadioItem(
                     content = Text(messages("radio.fullTime")),
-                    value = Some("Full-time Employment")
+                    value = Some("Full-time Employment"),
+                    checked = if(form.data.getOrElse("employmentStatus", "") == "Full-time Employment") true else false
                 ),
                 RadioItem(
                     content = Text(messages("radio.partTime")),
-                    value = Some("Part-time Employment")
+                    value = Some("Part-time Employment"),
+                    checked = if(form.data.getOrElse("employmentStatus", "") == "Part-time Employment") true else false
                 )
             )
         ))

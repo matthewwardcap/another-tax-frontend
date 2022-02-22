@@ -34,16 +34,19 @@
             items = Seq(
                 InputItem(
                     name = "day",
+                    value = if(form.data.getOrElse("day", "-1") == "-1") Option("") else form.data.get("day"),
                     autocomplete = Some("bday-day"),
                     classes = "govuk-input--width-2"
                 ),
                 InputItem(
                     name = "month",
+                    value = if(form.data.getOrElse("month", "-1") == "-1") Option("") else form.data.get("month"),
                     autocomplete = Some("bday-month"),
                     classes = "govuk-input--width-2"
                 ),
                 InputItem(
                     name = "year",
+                    value = if(form.data.getOrElse("year", "-1") == "-1") Option("") else form.data.get("year"),
                     autocomplete = Some("bday-year"),
                     classes = "govuk-input--width-4"
                 )

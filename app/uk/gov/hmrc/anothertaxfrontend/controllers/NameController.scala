@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.NameForm
+import uk.gov.hmrc.anothertaxfrontend.forms.{Data, NameForm}
 import uk.gov.hmrc.anothertaxfrontend.forms.NameForm._
 import uk.gov.hmrc.anothertaxfrontend.models.User._
 import uk.gov.hmrc.anothertaxfrontend.models.User
@@ -34,14 +34,25 @@ class NameController @Inject()(
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(namePage(NameForm.form)))
+    val homeRoute = routes.HelloWorldController.helloWorld
+    request.session.get("user") match {
+      case None => Future.successful(Redirect(homeRoute))
+      case Some(userString) => Json.parse(userString).asOpt[User] match {
+        case None => Future.successful(Redirect(homeRoute))
+        case Some(user) => {
+          val filledForm = Data(user.firstName.getOrElse(""), user.middleName, user.lastName.getOrElse(""))
+          val presentForm = NameForm.form.fill(filledForm)
+          Future.successful(Ok(namePage(presentForm)))
+        }
+      }
+    }
+    //Future.successful(Ok(namePage(NameForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show else
-      uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
-    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+    val controllerRoute = if (!summary) routes.DobController.show else routes.SummaryController.show
+    val homeRoute = routes.HelloWorldController.helloWorld
 
     request.session.get("user") match {
       case None => Future.successful(Redirect(homeRoute))

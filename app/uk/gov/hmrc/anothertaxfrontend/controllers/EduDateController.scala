@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm
+import uk.gov.hmrc.anothertaxfrontend.forms.{EduDateData, EduDateForm}
 import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.EduDatePage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -41,7 +42,13 @@ class EduDateController @Inject()(
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.education.isDefined) {
           if (user.education.getOrElse(false)) {
-            Future.successful(Ok(eduDatePage(EduDateForm.form, summary)))
+            val filledForm = EduDateData(
+              user.educationDate.map(day => day.getDate).getOrElse(-1),
+              user.educationDate.map(month => month.getMonth+1).getOrElse(-1),
+              user.educationDate.map(year => year.getYear+1900).getOrElse(-1)
+            )
+            val presentForm = EduDateForm.form.fill(filledForm)
+            Future.successful(Ok(eduDatePage(presentForm, summary)))
           } else Future.successful(Redirect(routes.SummaryController.show))
         } else Future.successful(Redirect(routes.EduBoolController.show))
       }

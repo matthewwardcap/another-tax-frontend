@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
-import uk.gov.hmrc.anothertaxfrontend.forms.SalaryForm
+import uk.gov.hmrc.anothertaxfrontend.forms.{SalaryData, SalaryForm}
 import uk.gov.hmrc.anothertaxfrontend.forms.SalaryForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.SalaryPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -41,8 +42,12 @@ class SalaryController @Inject()(
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.employmentStatus.isDefined) {
           if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed") {
-            Future.successful(Ok(salaryPage(SalaryForm.form, summary)))
-          } else Future.successful(Redirect(routes.SummaryController.show))
+            val filledForm = SalaryData(user.salary.getOrElse(-1))
+            val presentForm = SalaryForm.form.fill(filledForm)
+            Future.successful(Ok(salaryPage(presentForm, summary)))
+          } else {
+            Future.successful(Redirect(routes.SummaryController.show))
+          }
         } else  Future.successful(Redirect(routes.EmpController.show))
       }
     }

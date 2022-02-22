@@ -17,7 +17,7 @@
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.anothertaxfrontend.forms.EmpForm
+import uk.gov.hmrc.anothertaxfrontend.forms.{EmpData, EmpForm}
 import uk.gov.hmrc.anothertaxfrontend.forms.EmpForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.EmpPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -44,7 +44,11 @@ class EmpController @Inject()(
           if (user.education.isDefined) {
             if (user.education.getOrElse(false) && user.educationDate.isEmpty) {
               Future.successful(Redirect(routes.EduDateController.show))
-            } else Future.successful(Ok(empPage(EmpForm.form, summary)))
+            } else {
+              val filledForm = EmpData(user.employmentStatus.getOrElse(""))
+              val presentForm = EmpForm.form.fill(filledForm)
+              Future.successful(Ok(empPage(presentForm, summary)))
+            }
           } else Future.successful(Redirect(routes.EduBoolController.show))
       }
     }

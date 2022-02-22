@@ -30,7 +30,7 @@ object DobForm {
   val form: Form[DobData] = Form(mapping(
     "day" -> number.verifying(min(1), max(31)),
     "month" -> number.verifying(min(1), max(12)),
-    "year" -> number.verifying(min(1900), max(Year.now.getValue))
+    "year" -> number.verifying(min(1850), max(Year.now.getValue))
   )(DobData.apply)(DobData.unapply)
   )
 }

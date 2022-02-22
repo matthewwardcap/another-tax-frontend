@@ -17,7 +17,7 @@
 package uk.gov.hmrc.anothertaxfrontend.controllers
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.anothertaxfrontend.forms.EduBoolForm
+import uk.gov.hmrc.anothertaxfrontend.forms.{EduBoolData, EduBoolForm}
 import uk.gov.hmrc.anothertaxfrontend.forms.EduBoolForm._
 import uk.gov.hmrc.anothertaxfrontend.views.html.EduBoolPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -41,7 +41,9 @@ class EduBoolController @Inject()(
       case Some(userString) => Json.parse(userString).asOpt[User] match {
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.dob.isDefined) {
-          Future.successful(Ok(eduPage(EduBoolForm.form, summary)))
+          val filledForm = EduBoolData(user.education.getOrElse(false))
+          val presentForm = EduBoolForm.form.fill(filledForm)
+          Future.successful(Ok(eduPage(presentForm, summary)))
         } else  Future.successful(Redirect(routes.DobController.show))
       }
     }
