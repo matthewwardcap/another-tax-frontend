@@ -32,5 +32,13 @@ class HelloWorldViewSpec extends ViewSpecBase {
         elementText("h1") mustBe "Another Tax Service"
       }
     }
+    "pressing start now" should {
+      "redirect to correct page" in {
+        val target = inject[HelloWorldPage]
+        val result: Html = target()
+        lazy implicit val document: Document = Jsoup.parse(result.body)
+        elementText("h1") mustBe "Another Tax Service"
+      }
+    }
   }
 }

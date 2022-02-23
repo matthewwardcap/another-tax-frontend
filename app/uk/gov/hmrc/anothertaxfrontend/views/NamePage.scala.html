@@ -32,7 +32,7 @@
             },
             id = "width-20",
             name = "firstName",
-            value = form.data.get("firstName"),
+            value = form("firstName").value,
             label = Label(
                 content = Text(messages("namePage.firstName"))
             ),
@@ -44,7 +44,7 @@
             },
             id = "width-20",
             name = "middleName",
-            value = form.data.get("middleName"),
+            value = form("middleName").value,
             label = Label(
                 content = Text(messages("namePage.middleName"))
             ),
@@ -56,7 +56,7 @@
             },
             id = "width-20",
             name = "lastName",
-            value = form.data.get("lastName"),
+            value = form("lastName").value,
             label = Label(
                 content = Text(messages("namePage.lastName"))
             ),

@@ -46,7 +46,6 @@ class NameController @Inject()(
         }
       }
     }
-    //Future.successful(Ok(namePage(NameForm.form)))
   }
 
   def post: Action[AnyContent] = Action.async { implicit request =>
