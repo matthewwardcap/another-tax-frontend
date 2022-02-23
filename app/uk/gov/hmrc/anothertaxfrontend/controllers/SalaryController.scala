@@ -42,9 +42,11 @@ class SalaryController @Inject()(
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.employmentStatus.isDefined) {
           if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed") {
-            val filledForm = SalaryData(user.salary.getOrElse(-1))
-            val presentForm = SalaryForm.form.fill(filledForm)
-            Future.successful(Ok(salaryPage(presentForm, summary)))
+            val filledForm = user.salary match {
+              case None => SalaryForm.form
+              case Some(salary) => SalaryForm.form.fill(SalaryData(salary))
+            }
+            Future.successful(Ok(salaryPage(filledForm, summary)))
           } else {
             Future.successful(Redirect(routes.SummaryController.show))
           }

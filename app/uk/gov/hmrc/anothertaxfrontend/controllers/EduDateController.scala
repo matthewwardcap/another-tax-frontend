@@ -42,13 +42,11 @@ class EduDateController @Inject()(
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.education.isDefined) {
           if (user.education.getOrElse(false)) {
-            val filledForm = EduDateData(
-              user.educationDate.map(day => day.getDate).getOrElse(-1),
-              user.educationDate.map(month => month.getMonth+1).getOrElse(-1),
-              user.educationDate.map(year => year.getYear+1900).getOrElse(-1)
-            )
-            val presentForm = EduDateForm.form.fill(filledForm)
-            Future.successful(Ok(eduDatePage(presentForm, summary)))
+            val filledForm = user.educationDate match {
+              case None => EduDateForm.form
+              case Some(date) => EduDateForm.form.fill(EduDateData(date.getDate, date.getMonth+1, date.getYear+1900))
+            }
+            Future.successful(Ok(eduDatePage(filledForm, summary)))
           } else Future.successful(Redirect(routes.SummaryController.show))
         } else Future.successful(Redirect(routes.EduBoolController.show))
       }
@@ -57,9 +55,8 @@ class EduDateController @Inject()(
 
   def post: Action[AnyContent] = Action.async { implicit request =>
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
-    val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show else
-      uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
-    val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
+    val controllerRoute = if (!summary) routes.EmpController.show else routes.SummaryController.show
+    val homeRoute = routes.HelloWorldController.helloWorld
     val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
 
     request.session.get("user") match {
@@ -83,6 +80,6 @@ class EduDateController @Inject()(
   }
 
   def back: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Redirect(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show))
+    Future.successful(Redirect(routes.EduBoolController.show))
   }
 }

@@ -41,13 +41,11 @@ class DobController @Inject()(
       case Some(userString) => Json.parse(userString).asOpt[User] match {
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.firstName.isDefined) {
-          val filledForm = DobData(
-            user.dob.map(day => day.getDate).getOrElse(-1),
-            user.dob.map(month => month.getMonth+1).getOrElse(-1),
-            user.dob.map(year => year.getYear+1900).getOrElse(-1)
-          )
-          val presentForm = DobForm.form.fill(filledForm)
-          Future.successful(Ok(dobPage(presentForm, summary)))
+          val filledForm = user.dob match {
+            case None => DobForm.form
+            case Some(date) => DobForm.form.fill(DobData(date.getDate, date.getMonth+1, date.getYear+1900))
+          }
+          Future.successful(Ok(dobPage(filledForm, summary)))
         } else Future.successful(Redirect(routes.NameController.show))
       }
     }

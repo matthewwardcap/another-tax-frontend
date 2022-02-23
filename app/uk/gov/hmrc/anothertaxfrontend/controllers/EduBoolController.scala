@@ -41,9 +41,11 @@ class EduBoolController @Inject()(
       case Some(userString) => Json.parse(userString).asOpt[User] match {
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.dob.isDefined) {
-          val filledForm = EduBoolData(user.education.getOrElse(false))
-          val presentForm = EduBoolForm.form.fill(filledForm)
-          Future.successful(Ok(eduPage(presentForm, summary)))
+          val filledForm = user.education match {
+            case None => EduBoolForm.form
+            case Some(bool) => EduBoolForm.form.fill(EduBoolData(bool))
+          }
+          Future.successful(Ok(eduPage(filledForm, summary)))
         } else  Future.successful(Redirect(routes.DobController.show))
       }
     }

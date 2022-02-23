@@ -28,7 +28,7 @@ case class Data(
 object NameForm {
   val form: Form[Data] = Form(mapping(
     "firstName" -> nonEmptyText,
-    "middleName" -> optional(nonEmptyText),
+    "middleName" -> optional(text),
     "lastName" -> nonEmptyText
   )(Data.apply)(Data.unapply)
   )

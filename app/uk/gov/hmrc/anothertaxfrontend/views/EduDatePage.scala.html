@@ -35,19 +35,19 @@
                 InputItem(
                     name = "day",
                     autocomplete = Some("edu-day"),
-                    value = if(form.data.getOrElse("day", "-1") == "-1") Option("") else form.data.get("day"),
+                    value = form("day").value,
                     classes = "govuk-input--width-2"
                 ),
                 InputItem(
                     name = "month",
                     autocomplete = Some("edu-month"),
-                    value = if(form.data.getOrElse("month", "-1") == "-1") Option("") else form.data.get("month"),
+                    value = form("month").value,
                     classes = "govuk-input--width-2"
                 ),
                 InputItem(
                     name = "year",
                     autocomplete = Some("edu-year"),
-                    value = if(form.data.getOrElse("year", "-1") == "-1") Option("") else form.data.get("year"),
+                    value = form("year").value,
                     classes = "govuk-input--width-4"
                 )
             ),
