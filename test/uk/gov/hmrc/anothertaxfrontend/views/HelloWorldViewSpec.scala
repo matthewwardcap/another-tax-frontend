@@ -19,25 +19,25 @@ package uk.gov.hmrc.anothertaxfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
+import uk.gov.hmrc.anothertaxfrontend.forms.Data
+import uk.gov.hmrc.anothertaxfrontend.forms.NameForm
+import uk.gov.hmrc.anothertaxfrontend.forms._
 import uk.gov.hmrc.anothertaxfrontend.views.html.HelloWorldPage
 
 class HelloWorldViewSpec extends ViewSpecBase {
 
   "Hello World View" when {
     "rendering a view" should {
+      val target: HelloWorldPage = inject[HelloWorldPage]
+      val result: Html = target()
+      lazy implicit val document: Document = Jsoup.parse(result.body)
+
       "have the correct heading" in {
-        val target = inject[HelloWorldPage]
-        val result: Html = target()
-        lazy implicit val document: Document = Jsoup.parse(result.body)
         elementText("h1") mustBe "Another Tax Service"
       }
-    }
-    "pressing start now" should {
-      "redirect to correct page" in {
-        val target = inject[HelloWorldPage]
-        val result: Html = target()
-        lazy implicit val document: Document = Jsoup.parse(result.body)
-        elementText("h1") mustBe "Another Tax Service"
+
+      "have a button to move pages" in {
+        elementText("a.govuk-button") mustBe "Start now"
       }
     }
   }

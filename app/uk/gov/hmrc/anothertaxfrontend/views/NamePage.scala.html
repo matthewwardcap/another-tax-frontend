@@ -30,7 +30,7 @@
             errorMessage = form("firstName").errors.headOption.map { e =>
                 ErrorMessage(content = Text(messages(e.message)))
             },
-            id = "width-20",
+            id = "firstName",
             name = "firstName",
             value = form("firstName").value,
             label = Label(
@@ -42,7 +42,7 @@
             errorMessage = form("middleName").errors.headOption.map { e =>
                 ErrorMessage(content = Text(messages(e.message)))
             },
-            id = "width-20",
+            id = "middleName",
             name = "middleName",
             value = form("middleName").value,
             label = Label(
@@ -54,7 +54,7 @@
             errorMessage = form("lastName").errors.headOption.map { e =>
                 ErrorMessage(content = Text(messages(e.message)))
             },
-            id = "width-20",
+            id = "lastName",
             name = "lastName",
             value = form("lastName").value,
             label = Label(

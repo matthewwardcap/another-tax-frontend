@@ -5,29 +5,29 @@ GET        /                        uk.gov.hmrc.anothertaxfrontend.controllers.H
 GET        /post                    uk.gov.hmrc.anothertaxfrontend.controllers.HelloWorldController.post
 
 GET        /name                    uk.gov.hmrc.anothertaxfrontend.controllers.NameController.show
-GET        /name-post               uk.gov.hmrc.anothertaxfrontend.controllers.NameController.post
+POST       /name-post               uk.gov.hmrc.anothertaxfrontend.controllers.NameController.post
 
 GET        /dob                     uk.gov.hmrc.anothertaxfrontend.controllers.DobController.show
-GET        /dob-post                uk.gov.hmrc.anothertaxfrontend.controllers.DobController.post
+POST       /dob-post                uk.gov.hmrc.anothertaxfrontend.controllers.DobController.post
 GET        /dob-back                uk.gov.hmrc.anothertaxfrontend.controllers.DobController.back
 
 GET        /edu-bool                uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.show
-GET        /edu-bool-post           uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.post
+POST       /edu-bool-post           uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.post
 GET        /edu-bool-back           uk.gov.hmrc.anothertaxfrontend.controllers.EduBoolController.back
 
 GET        /edu-date                uk.gov.hmrc.anothertaxfrontend.controllers.EduDateController.show
-GET        /edu-date-post           uk.gov.hmrc.anothertaxfrontend.controllers.EduDateController.post
+POST       /edu-date-post           uk.gov.hmrc.anothertaxfrontend.controllers.EduDateController.post
 GET        /edu-date-back           uk.gov.hmrc.anothertaxfrontend.controllers.EduDateController.back
 
 GET        /employment              uk.gov.hmrc.anothertaxfrontend.controllers.EmpController.show
-GET        /employment-post         uk.gov.hmrc.anothertaxfrontend.controllers.EmpController.post
+POST       /employment-post         uk.gov.hmrc.anothertaxfrontend.controllers.EmpController.post
 GET        /employment-back         uk.gov.hmrc.anothertaxfrontend.controllers.EmpController.back
 
 GET        /salary                  uk.gov.hmrc.anothertaxfrontend.controllers.SalaryController.show
-GET        /salary-post             uk.gov.hmrc.anothertaxfrontend.controllers.SalaryController.post
+POST       /salary-post             uk.gov.hmrc.anothertaxfrontend.controllers.SalaryController.post
 GET        /salary-back             uk.gov.hmrc.anothertaxfrontend.controllers.SalaryController.back
 
 GET        /summary                 uk.gov.hmrc.anothertaxfrontend.controllers.SummaryController.show
-GET        /summary-post            uk.gov.hmrc.anothertaxfrontend.controllers.SummaryController.post
+POST       /summary-post            uk.gov.hmrc.anothertaxfrontend.controllers.SummaryController.post
 
 GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)

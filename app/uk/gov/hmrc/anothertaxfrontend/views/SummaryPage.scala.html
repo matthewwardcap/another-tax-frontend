@@ -21,27 +21,6 @@
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukSummaryList : GovukSummaryList)
 @(user: User)(implicit request: Request[_], messages: Messages)
 
-@name = @{
-    val first = user.firstName match {
-        case None => ""
-        case Some(value) => value
-    }
-    val second = user.middleName match {
-        case None => ""
-        case Some(value) => value
-    }
-    val third = user.lastName match {
-        case None => ""
-        case Some(value) => value
-    }
-    first + " " + second + " " + third
-}
-
-@inEducation = @{user.education match {
-    case None => ""
-    case Some(value) =>
-}}
-
 @formatType = @{"dd-MM-yyyy"}
 
 @layout(pageTitle = Some(messages("service.name"))) {
@@ -54,7 +33,9 @@
                     content = Text(messages("list.name"))
                 ),
                 value = Value(
-                    content = Text(name)
+                    content = Text(
+                        user.firstName.getOrElse("") + " " + user.middleName.getOrElse("") + " " + user.lastName.getOrElse("")
+                    )
                 ),
                 actions = Some(Actions(
                     items = Seq(
@@ -133,10 +114,7 @@
                     content = Text(messages("list.emp"))
                 ),
                 value = Value(
-                    content = Text(user.employmentStatus match {
-                        case None => ""
-                        case Some(value) => value
-                    })
+                    content = Text(user.employmentStatus.getOrElse(""))
                 ),
                 actions = Some(Actions(
                     items = Seq(
