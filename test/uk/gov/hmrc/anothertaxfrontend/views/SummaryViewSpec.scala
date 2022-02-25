@@ -70,35 +70,30 @@ class SummaryViewSpec extends ViewSpecBase {
 
     }
 
-    /*
-    "rendering a view with no errors and reached summary" must {
+    "rendering a view with missing optionals" must {
 
-      lazy val target: EmpPage = inject[EmpPage]
-      lazy val form = EmpForm.form
-      lazy val result: Html = target(form, summary = true)
+      lazy val target: SummaryPage = inject[SummaryPage]
+      lazy val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+      lazy val date = format.parse("19-03-2000")
+      lazy val user: User = User(Some("first"), None, Some("last"), Some(date), Some(false),
+        None, Some("Unemployed"), None)
+      lazy val result: Html = target(user)
       lazy implicit val document: Document = Jsoup.parse(result.body)
 
 
-      "not have a button to go back to previous page" in {
-        document.select("a.govuk-back-link") mustBe empty
+      "have a label associated to the Name output with the correct text" in {
+        elementText("""[class="govuk-summary-list__value"]""") mustBe "first last"
+      }
+
+      "have a label associated to the Education finish date empty" in {
+        document.select("""[class="govuk-summary-list__value"]""").get(3).text mustBe ""
+      }
+
+      "have a label associated to the Salary empty" in {
+        document.select("""[class="govuk-summary-list__value"]""").get(5).text mustBe ""
       }
 
     }
-
-    "rendering a view with no input errors" must {
-
-      lazy val target: EmpPage = inject[EmpPage]
-      lazy val form = EmpForm.form.bindFromRequest()
-      lazy val result: Html = target(form, summary = false)
-      lazy implicit val document: Document = Jsoup.parse(result.body)
-
-      "have an error message against the form" in {
-        elementText("form p#employmentStatus-error") mustBe "Error: This field is required"
-      }
-
-    }
-
-     */
 
   }
 }
