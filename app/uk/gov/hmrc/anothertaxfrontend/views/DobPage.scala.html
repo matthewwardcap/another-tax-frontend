@@ -60,7 +60,7 @@
                 content = Text(messages("date.example"))
             )),
             errorMessage = form.errors.headOption.map { e =>
-                ErrorMessage(content = Text(messages(e.message)))
+                ErrorMessage(content = Text(messages(e.message, e.args.headOption.getOrElse(""))))
             },
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
