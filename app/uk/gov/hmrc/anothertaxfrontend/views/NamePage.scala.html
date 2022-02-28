@@ -18,12 +18,16 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.anothertaxfrontend.forms.Data
 
-@this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukInput : GovukInput)
+@this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukInput : GovukInput, govukErrorSummary: GovukErrorSummary)
 
 @(form: Form[Data])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("namePage.title")}</h1>
+
+    @if(form.hasErrors) {
+        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName")))
+    }
 
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.post) {
         @govukInput(Input(
