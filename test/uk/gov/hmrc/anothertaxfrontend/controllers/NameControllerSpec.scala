@@ -19,10 +19,12 @@ package uk.gov.hmrc.anothertaxfrontend.controllers
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.anothertaxfrontend.models.User
 
-class HelloWorldControllerSpec extends ControllerSpecBase {
+class NameControllerSpec extends ControllerSpecBase {
 
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
@@ -32,33 +34,26 @@ class HelloWorldControllerSpec extends ControllerSpecBase {
       )
       .build()
 
-  private val controller = inject[HelloWorldController]
+  private val controller = inject[NameController]
 
-  "HelloWorldController" when {
-    "calling helloWorld()" must {
-
-      "return 200 (Ok)" in {
-        val result = controller.helloWorld(fakeRequest)
-        status(result) mustBe Status.OK
+  "NameController" when {
+    "calling show()" must {
+      "return 200 (Ok) if user exists" in {
+        val user = User(None, None, None, None, None, None, None, None)
+        val result = controller.show()(FakeRequest(POST, "/another-tax-service/name").withSession("user" -> Json.toJson(user.copy()).toString))
+        status(result) mustBe OK
       }
-
-      "return HTML" in {
-        val result = controller.helloWorld(fakeRequest)
+      "return HTML if user exists" in {
+        val user = User(None, None, None, None, None, None, None, None)
+        val result = controller.show()(FakeRequest(POST, "/another-tax-service/name").withSession("user" -> Json.toJson(user.copy()).toString))
         contentType(result) mustBe Some("text/html")
         charset(result) mustBe Some("utf-8")
       }
-
-    }
-
-    "calling post()" must {
-
-      "return 200 (Ok)" in {
-        val result = controller.post()(FakeRequest(POST, "/post"))
-
-        status(result) mustBe SEE_OTHER
-        header(LOCATION, result) mustBe Some("/another-tax-service/name")
+      "return 303 if user doesn't exist" in {
+        val result = controller.show()(FakeRequest(POST, "/another-tax-service/name").withSession())
+        status(result) mustBe 303
+        header(LOCATION, result) mustBe Some("/another-tax-service")
       }
-
     }
 
   }
