@@ -30,4 +30,6 @@ GET        /salary-back             uk.gov.hmrc.anothertaxfrontend.controllers.S
 GET        /summary                 uk.gov.hmrc.anothertaxfrontend.controllers.SummaryController.show
 POST       /summary-post            uk.gov.hmrc.anothertaxfrontend.controllers.SummaryController.post
 
+GET        /tax                     uk.gov.hmrc.anothertaxfrontend.controllers.TaxController.show
+
 GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)

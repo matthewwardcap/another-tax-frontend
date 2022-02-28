@@ -38,3 +38,5 @@ list.eduBool = Still in education
 list.eduDate = Education finish date
 list.emp = Employment Status
 list.salary = Salary
+
+taxPage.title = Application Complete

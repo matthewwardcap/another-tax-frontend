@@ -19,9 +19,6 @@ package uk.gov.hmrc.anothertaxfrontend.views
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import uk.gov.hmrc.anothertaxfrontend.forms.Data
-import uk.gov.hmrc.anothertaxfrontend.forms.NameForm
-import uk.gov.hmrc.anothertaxfrontend.forms._
 import uk.gov.hmrc.anothertaxfrontend.views.html.HelloWorldPage
 
 class HelloWorldViewSpec extends ViewSpecBase {

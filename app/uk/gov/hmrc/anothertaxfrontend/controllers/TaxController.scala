@@ -18,17 +18,20 @@ package uk.gov.hmrc.anothertaxfrontend.controllers
 
 import uk.gov.hmrc.anothertaxfrontend.models.User._
 import uk.gov.hmrc.anothertaxfrontend.models.User
-import uk.gov.hmrc.anothertaxfrontend.views.html.SummaryPage
+import uk.gov.hmrc.anothertaxfrontend.views.html.TaxPage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import play.api.libs.json._
+import uk.gov.hmrc.anothertaxfrontend.services.TaxService
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class SummaryController @Inject()(
-                                mcc: MessagesControllerComponents,
-                                summaryPage: SummaryPage)
+class TaxController @Inject()(
+                               service: TaxService,
+                               mcc: MessagesControllerComponents,
+                               taxPage: TaxPage)
   extends FrontendController(mcc) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
@@ -45,8 +48,10 @@ class SummaryController @Inject()(
         } else if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed" && user.salary.isEmpty) {
           Future.successful(Redirect(routes.SalaryController.show))
         } else {
-          val summary = true
-          Future.successful(Ok(summaryPage(user)).addingToSession("summary" -> Json.toJson(summary).toString))
+          service.post(user) match {
+            case Left(e) => Future.successful(Redirect(homeRoute))
+            case Right(value) => Future.successful(Ok(taxPage(value)))
+          }
         }
       }
     }
