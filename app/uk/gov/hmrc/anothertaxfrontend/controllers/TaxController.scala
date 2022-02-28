@@ -26,6 +26,7 @@ import uk.gov.hmrc.anothertaxfrontend.services.TaxService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
+import scala.math.BigDecimal.RoundingMode
 
 @Singleton
 class TaxController @Inject()(
@@ -50,7 +51,7 @@ class TaxController @Inject()(
         } else {
           service.post(user) match {
             case Left(e) => Future.successful(Redirect(homeRoute))
-            case Right(value) => Future.successful(Ok(taxPage(value)))
+            case Right(value) => Future.successful(Ok(taxPage(value.setScale(2, RoundingMode.HALF_UP))))
           }
         }
       }

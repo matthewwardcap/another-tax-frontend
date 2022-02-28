@@ -65,7 +65,7 @@ class SummaryViewSpec extends ViewSpecBase {
       }
 
       "have a button to submit form data" in {
-        elementText("button") mustBe "Save and continue"
+        elementText("a.govuk-button") mustBe "Save and continue"
       }
 
     }

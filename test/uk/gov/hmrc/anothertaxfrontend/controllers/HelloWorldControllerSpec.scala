@@ -48,6 +48,22 @@ class HelloWorldControllerSpec extends ControllerSpecBase {
       }
 
     }
+
+    "calling post()" must {
+
+      "return 200 (Ok)" in {
+        val result = controller.helloWorld(fakeRequest)
+        status(result) mustBe Status.OK
+      }
+
+      "return HTML" in {
+        val result = controller.helloWorld(fakeRequest)
+        contentType(result) mustBe Some("text/html")
+        charset(result) mustBe Some("utf-8")
+      }
+
+    }
+
   }
 
 }

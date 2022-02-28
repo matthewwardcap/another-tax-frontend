@@ -27,7 +27,7 @@ class TaxService {
 
     lazy val result = (i: Double) => user.salary match {
       case None => Left("Salary doesn't exist")
-      case Some(sal) => Right(sal * i)
+      case Some(sal) => Right(sal - (sal * i))
     }
 
     if (user.education.getOrElse(false) || user.employmentStatus.getOrElse("") == "Unemployed") {
