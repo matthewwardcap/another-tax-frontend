@@ -32,7 +32,7 @@
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.post) {
         @govukInput(Input(
             errorMessage = form.errors.headOption.map { e =>
-                ErrorMessage(content = Text(messages(e.message, e.args.headOption.getOrElse(""), e.args.tail.headOption.getOrElse(""))))
+                ErrorMessage(content = Text(messages(e.message, e.args.headOption.getOrElse(""), e.args.drop(1).headOption.getOrElse(""))))
             },
             id = "salary",
             name = "salary",
