@@ -64,7 +64,7 @@ class EduBoolController @Inject()(
           form.bindFromRequest().fold(
             formWithErrors => Future.successful(BadRequest(eduPage(formWithErrors, summary))),
             dataForm => {
-              if (dataForm.education) {
+              if (!dataForm.education) {
                 val updatedUser = user.copy(education = Option(dataForm.education))
                 val updatedUserAsJson = Json.toJson(updatedUser).toString()
                 Future.successful(Redirect(routes.EduDateController.show).addingToSession("user" -> updatedUserAsJson))

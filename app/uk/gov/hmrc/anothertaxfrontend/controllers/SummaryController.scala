@@ -40,7 +40,7 @@ class SummaryController @Inject()(
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.firstName.isEmpty || user.lastName.isEmpty || user.dob.isEmpty || user.education.isEmpty || user.employmentStatus.isEmpty) {
           Future.successful(Redirect(routes.EmpController.show))
-        } else if (user.education.getOrElse(false) && user.educationDate.isEmpty) {
+        } else if (!user.education.getOrElse(false) && user.educationDate.isEmpty) {
           Future.successful(Redirect(routes.EduDateController.show))
         } else if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed" && user.salary.isEmpty) {
           Future.successful(Redirect(routes.SalaryController.show))

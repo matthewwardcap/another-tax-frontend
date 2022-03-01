@@ -42,7 +42,7 @@ class EmpController @Inject()(
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) =>
           if (user.education.isDefined) {
-            if (user.education.getOrElse(false) && user.educationDate.isEmpty) {
+            if (!user.education.getOrElse(false) && user.educationDate.isEmpty) {
               Future.successful(Redirect(routes.EduDateController.show))
             } else {
               val filledForm = user.employmentStatus match {

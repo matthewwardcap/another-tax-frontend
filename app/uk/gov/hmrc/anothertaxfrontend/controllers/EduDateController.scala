@@ -41,7 +41,7 @@ class EduDateController @Inject()(
       case Some(userString) => Json.parse(userString).asOpt[User] match {
         case None => Future.successful(Redirect(homeRoute))
         case Some(user) => if (user.education.isDefined) {
-          if (user.education.getOrElse(false)) {
+          if (!user.education.get) {
             val filledForm = user.educationDate match {
               case None => EduDateForm.form
               case Some(date) => EduDateForm.form.fill(EduDateData(date.getDate, date.getMonth+1, date.getYear+1900))

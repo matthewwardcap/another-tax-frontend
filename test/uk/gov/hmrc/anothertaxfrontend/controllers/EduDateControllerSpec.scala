@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.test.CSRFTokenHelper._
 
-class DobControllerSpec extends ControllerSpecBase {
+class EduDateControllerSpec extends ControllerSpecBase {
 
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
@@ -36,72 +36,90 @@ class DobControllerSpec extends ControllerSpecBase {
       )
       .build()
 
-  private val controller = inject[DobController]
+  private val controller = inject[EduDateController]
 
-  "DobController" when {
+  "NameController" when {
     "calling show()" must {
-      "return 200 (Ok) if user exists and previous fields done" in {
-        val user = User(Some("first"), Some("middle"), Some("first"), None, None, None, None, None)
-        val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob").withSession("user" -> Json.toJson(user.copy()).toString))
+      "return 200 (Ok) if user exists and previous fields done and false" in {
+        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        val date = format.parse("19-03-2000")
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
       }
-      "return HTML if user exists and previous fields done" in {
-        val user = User(Some("first"), Some("middle"), Some("first"), None, None, None, None, None)
-        val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob").withSession("user" -> Json.toJson(user.copy()).toString))
+      "return HTML if user exists and previous fields done and false" in {
+        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        val date = format.parse("19-03-2000")
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date").withSession("user" -> Json.toJson(user.copy()).toString))
         contentType(result) mustBe Some("text/html")
         charset(result) mustBe Some("utf-8")
       }
-      "return 200 (Ok) if user exists and field already filled" in {
+      "return 200 (Ok) if user exists and field already filled and false" in {
         val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
         val date = format.parse("19-03-2000")
-        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), None, None, None, None)
-        val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob").withSession("user" -> Json.toJson(user.copy()).toString))
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), None, None)
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
         contentAsString(result) must include ("19")
         contentAsString(result) must include ("3")
         contentAsString(result) must include ("2000")
       }
       "return 303 if user doesn't exist" in {
-        val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob").withSession())
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date").withSession())
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
       "return 303 and redirect to home if user incorrect" in {
         val user = "test"
-        val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob")
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
         )
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
-      "return 303 and redirect to name if name field missing" in {
+      "return 303 and redirect to education if education field missing" in {
         val user = User(None, None, None, None, None, None, None, None)
-        val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob")
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
-        )
-        status(result) mustBe 303
-        header(LOCATION, result) mustBe Some("/another-tax-service/name")
-      }
-    }
-
-    "calling post()" must {
-      "return 303 (Redirect) if user exists and form filled correctly" in {
-        val user = User(Some("first"), Some("middle"), Some("first"), None, None, None, None, None)
-        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
-          .withSession("user" -> Json.toJson(user.copy()).toString)
-          .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "2000").withCSRFToken
         )
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service/edu-bool")
       }
+      "return 303 and redirect to employment if education true" in {
+        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        val date = format.parse("19-03-2000")
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(true), None, None, None)
+        val result = controller.show()(FakeRequest(GET, "/another-tax-service/edu-date")
+          .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
+        )
+        status(result) mustBe 303
+        header(LOCATION, result) mustBe Some("/another-tax-service/summary")
+      }
+    }
+
+    "calling post()" must {
+      "return 303 (Redirect) to employment if user exists and form filled correctly" in {
+        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        val date = format.parse("19-03-2000")
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/edu-date-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "2000").withCSRFToken
+        )
+        status(result) mustBe 303
+        header(LOCATION, result) mustBe Some("/another-tax-service/employment")
+      }
       "return 303 and redirect to home if user doesn't exist" in {
-        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post"))
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/edu-date-post"))
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
       "return 400 (BAD_REQUEST) and refresh if form has error" in {
-        val user = User(Some("first"), Some("middle"), Some("first"), None, None, None, None, None)
-        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        val date = format.parse("19-03-2000")
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/edu-date-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
           .withFormUrlEncodedBody("day" -> "", "month" -> "", "year" -> "").withCSRFToken
         )
@@ -111,8 +129,8 @@ class DobControllerSpec extends ControllerSpecBase {
       "return 303 and redirect to summary if summary true" in {
         val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
         val date = format.parse("19-03-2000")
-        val user = User(Some("first"), Some("middle"), Some("last"), None, Some(false), None, Some("Unemployed"), None)
-        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+        val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/edu-date-post")
           .withSession("user" -> Json.toJson(user.copy()).toString, "summary" -> Json.toJson(true).toString)
           .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "2000").withCSRFToken
         )
@@ -121,32 +139,34 @@ class DobControllerSpec extends ControllerSpecBase {
       }
       "return 303 and redirect to home if user incorrect" in {
         val user = "test"
-        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/edu-date-post")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
           .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "2000").withCSRFToken
         )
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
-      "return 303 and redirect to name if name field missing" in {
+      "return 303 and redirect to education if education field missing" in {
         val user = User(None, None, None, None, None, None, None, None)
-        val result = controller.show()(FakeRequest(POST, "/another-tax-service/dob-post")
+        val result = controller.show()(FakeRequest(POST, "/another-tax-service/edu-date-post")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
           .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "2000").withCSRFToken
         )
         status(result) mustBe 303
-        header(LOCATION, result) mustBe Some("/another-tax-service/name")
+        header(LOCATION, result) mustBe Some("/another-tax-service/edu-bool")
       }
     }
 
     "calling back()" must {
       "return 303 (Redirect)" in {
-        val user = User(Some("first"), Some("middle"), Some("first"), None, None, None, None, None)
-        val result = controller.back()(FakeRequest(POST, "/another-tax-service/dob-back")
+        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+        val date = format.parse("19-03-2000")
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.back()(FakeRequest(POST, "/another-tax-service/edu-date-back")
           .withSession("user" -> Json.toJson(user.copy()).toString)
         )
         status(result) mustBe 303
-        header(LOCATION, result) mustBe Some("/another-tax-service/name")
+        header(LOCATION, result) mustBe Some("/another-tax-service/edu-bool")
       }
     }
 
