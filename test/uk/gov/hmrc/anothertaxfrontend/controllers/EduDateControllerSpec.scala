@@ -38,7 +38,7 @@ class EduDateControllerSpec extends ControllerSpecBase {
 
   private val controller = inject[EduDateController]
 
-  "NameController" when {
+  "EdudateController" when {
     "calling show()" must {
       "return 200 (Ok) if user exists and previous fields done and false" in {
         val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
