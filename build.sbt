@@ -11,6 +11,7 @@ lazy val microservice = Project(appName, file("."))
     majorVersion                     := 0,
     scalaVersion                     := "2.12.14",
     libraryDependencies              ++= AppDependencies.compile ++ AppDependencies.test,
+    libraryDependencies += "org.scalamock"          %% "scalamock"          % "5.1.0" % Test,
     pipelineStages in Assets := Seq(gzip),
     TwirlKeys.templateImports ++= Seq(
       "uk.gov.hmrc.govukfrontend.views.html.components._",
