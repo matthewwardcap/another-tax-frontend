@@ -76,7 +76,7 @@ class NameFormSpec extends UnitSpec {
         errors mustBe false
       }
 
-      "generate a FullName model with no middle name" in {
+      "generate a FullName model with a middle name" in {
         val result = form.bind(data)
         if (result.hasErrors) {
           fail("errors reported on a valid form")
