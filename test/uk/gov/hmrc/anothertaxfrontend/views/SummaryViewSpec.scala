@@ -61,7 +61,7 @@ class SummaryViewSpec extends ViewSpecBase {
       }
 
       "have a label associated to the Salary output with the correct text" in {
-        document.select("""[class="govuk-summary-list__value"]""").get(5).text mustBe "£30000"
+        document.select("""[class="govuk-summary-list__value"]""").get(5).text mustBe "£30000.00"
       }
 
       "have a button to submit form data" in {

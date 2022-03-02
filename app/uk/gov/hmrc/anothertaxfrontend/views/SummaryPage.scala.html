@@ -133,7 +133,7 @@
                 value = Value(
                     content = Text(user.salary match {
                         case None => ""
-                        case Some(value) => "£" + value.toString()
+                        case Some(value) => "£" + String.format("%.2f", value.bigDecimal)
                     })
                 ),
                 actions = Some(Actions(
