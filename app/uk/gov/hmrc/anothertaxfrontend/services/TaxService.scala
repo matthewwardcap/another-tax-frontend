@@ -30,7 +30,7 @@ class TaxService {
       case Some(sal) => Right(sal - (sal * i))
     }
 
-    if (user.education.getOrElse(false) || user.employmentStatus.getOrElse("") == "Unemployed") {
+    if (user.education.getOrElse(true) || user.employmentStatus.getOrElse("") == "Unemployed") {
       Right(BigDecimal(0))
     } else if (user.employmentStatus.getOrElse("") == "Part-time Employment") {
       val tax = 0.95
