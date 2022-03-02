@@ -19,25 +19,23 @@ package uk.gov.hmrc.anothertaxfrontend.forms
 import play.api.data.Form
 import uk.gov.hmrc.anothertaxfrontend.core.UnitSpec
 
-class EduBoolFormSpec extends UnitSpec {
-  val form: Form[EduBoolData] = EduBoolForm.form
+class EmpFormSpec extends UnitSpec {
+  val form: Form[EmpData] = EmpForm.form
 
-  "EduBoolForm.form" when {
+  "EmpForm.form" when {
 
-    /*
-    "no education is supplied" must {
-      "result in a an error against the education field" in {
+    "no employmentStatus is supplied" must {
+      "result in a an error against the employmentStatus field" in {
         val result = form.bind(Map("" -> ""))
-        val error = result("education").error.getOrElse(fail("error against education field not generated"))
+        val error = result("employmentStatus").error.getOrElse(fail("error against employmentStatus field not generated"))
         error.message mustBe "error.required"
       }
     }
-    */
 
-    "bound with data containing a valid education" must {
+    "bound with data containing a valid employmentStatus" must {
 
-      val model = EduBoolData(true)
-      val data = Map("education" -> model.education.toString)
+      val model = EmpData("Unemployed")
+      val data = Map("employmentStatus" -> model.employmentStatus)
 
       "result in no errors" in {
         val result = form.bind(data)
@@ -45,7 +43,7 @@ class EduBoolFormSpec extends UnitSpec {
         errors mustBe false
       }
 
-      "generate a EduBoolData model" in {
+      "generate a EmpData model" in {
         val result = form.bind(data)
         if (result.hasErrors) {
           fail("errors reported on a valid form")
@@ -57,9 +55,9 @@ class EduBoolFormSpec extends UnitSpec {
 
     "built with a model" must {
 
-      val model = EduBoolData(true)
+      val model = EmpData("Unemployed")
       val data = Map(
-        "education" -> model.education.toString
+        "employmentStatus" -> model.employmentStatus
       )
 
       "result in a form with no errors" in {
