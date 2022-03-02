@@ -20,6 +20,8 @@ import org.scalamock.handlers.CallHandler
 import uk.gov.hmrc.anothertaxfrontend.controllers.ControllerSpecBase
 import uk.gov.hmrc.anothertaxfrontend.models.User
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 class TaxServiceSpec extends ControllerSpecBase{
@@ -27,8 +29,8 @@ class TaxServiceSpec extends ControllerSpecBase{
   trait Test {
     lazy val service = new TaxService()
 
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-    val date: Date = format.parse("19-03-2000")
+    val format: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    val date: LocalDate = LocalDate.parse("19-03-2000", format)
     val fullUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Full-time Employment"), Some(30000))
     val partUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Part-time Employment"), Some(30000))
     val unemployedUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)

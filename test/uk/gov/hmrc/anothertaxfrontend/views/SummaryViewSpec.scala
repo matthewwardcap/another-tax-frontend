@@ -23,14 +23,17 @@ import play.twirl.api.Html
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import uk.gov.hmrc.anothertaxfrontend.views.html.SummaryPage
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class SummaryViewSpec extends ViewSpecBase {
 
   "SummaryPage" when {
     "rendering a view with no errors" must {
 
       lazy val target: SummaryPage = inject[SummaryPage]
-      lazy val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-      lazy val date = format.parse("19-03-2000")
+      lazy val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+      lazy val date = LocalDate.parse("19-03-2000", format)
       lazy val user: User = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true),
         Some(date), Some("Full-time Employment"), Some(30000))
       lazy val result: Html = target(user)
@@ -73,8 +76,8 @@ class SummaryViewSpec extends ViewSpecBase {
     "rendering a view with missing optionals" must {
 
       lazy val target: SummaryPage = inject[SummaryPage]
-      lazy val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-      lazy val date = format.parse("19-03-2000")
+      lazy val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+      lazy val date = LocalDate.parse("19-03-2000", format)
       lazy val user: User = User(Some("first"), None, Some("last"), Some(date), Some(false),
         None, Some("Unemployed"), None)
       lazy val result: Html = target(user)

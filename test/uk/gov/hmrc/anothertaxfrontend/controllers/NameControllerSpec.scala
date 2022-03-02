@@ -26,6 +26,9 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.test.CSRFTokenHelper._
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class NameControllerSpec extends ControllerSpecBase {
 
   override def fakeApplication(): Application =
@@ -92,8 +95,8 @@ class NameControllerSpec extends ControllerSpecBase {
         contentAsString(result) must include ("This field is required")
       }
       "return 303 and redirect to summary if summary true" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(None, None, None, Some(date), Some(false), None, Some("Unemployed"), None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/name-post")
           .withSession("user" -> Json.toJson(user.copy()).toString, "summary" -> Json.toJson(true).toString)

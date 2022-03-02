@@ -26,6 +26,9 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.test.CSRFTokenHelper._
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class DobControllerSpec extends ControllerSpecBase {
 
   override def fakeApplication(): Application =
@@ -52,8 +55,8 @@ class DobControllerSpec extends ControllerSpecBase {
         charset(result) mustBe Some("utf-8")
       }
       "return 200 (Ok) if user exists and field already filled" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), None, None, None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/dob").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
@@ -109,8 +112,8 @@ class DobControllerSpec extends ControllerSpecBase {
         contentAsString(result) must include ("Numeric value expected")
       }
       "return 303 and redirect to summary if summary true" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), None, Some(false), None, Some("Unemployed"), None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
           .withSession("user" -> Json.toJson(user.copy()).toString, "summary" -> Json.toJson(true).toString)

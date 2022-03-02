@@ -17,11 +17,12 @@
 @import uk.gov.hmrc.anothertaxfrontend.views.html.Layout
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.anothertaxfrontend.models.User
+@import java.time.format.DateTimeFormatter
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukSummaryList : GovukSummaryList)
 @(user: User)(implicit request: Request[_], messages: Messages)
 
-@formatType = @{"dd-MM-yyyy"}
+@formatType = @{DateTimeFormatter.ofPattern("dd-MM-yyyy")}
 
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("summaryPage.title")}</h1>

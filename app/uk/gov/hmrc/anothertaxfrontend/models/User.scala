@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.anothertaxfrontend.models
 
-import java.util.Date
 import play.api.libs.json._
+import java.time.LocalDate
 
 case class User(
                  firstName:Option[String],
                  middleName:Option[String],
                  lastName:Option[String],
-                 dob:Option[Date],
+                 dob:Option[LocalDate],
                  education:Option[Boolean],
-                 educationDate:Option[Date],
+                 educationDate:Option[LocalDate],
                  employmentStatus:Option[String],
                  salary:Option[BigDecimal]
                )

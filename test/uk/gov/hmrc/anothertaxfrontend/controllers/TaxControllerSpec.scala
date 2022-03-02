@@ -31,6 +31,9 @@ import play.api.test.CSRFTokenHelper._
 import uk.gov.hmrc.anothertaxfrontend.services.TaxService
 import uk.gov.hmrc.anothertaxfrontend.views.html.TaxPage
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class TaxControllerSpec extends ControllerSpecBase with MockFactory {
 
   override def fakeApplication(): Application =
@@ -52,61 +55,61 @@ class TaxControllerSpec extends ControllerSpecBase with MockFactory {
   "TaxController" when {
     "calling show()" must {
       "return 200 (Ok) if user exists and previous fields done and employmentStatus Full-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Full-time Employment"), Some(30000))
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
       }
       "return HTML if user exists and previous fields done and employmentStatus Full-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Full-time Employment"), Some(30000))
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         contentType(result) mustBe Some("text/html")
         charset(result) mustBe Some("utf-8")
       }
       "return 200 (Ok) if user exists and previous fields done and employmentStatus Part-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Part-time Employment"), Some(30000))
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
       }
       "return 200 (Ok) if user exists and previous fields done and employmentStatus Unemployed Employment and salary missing" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Unemployed"), None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
       }
       "return 303 if user exists and previous fields done and employmentStatus Full-time Employment and Salary missing" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Full-time Employment"), None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service/salary")
       }
       "return 303 if user exists and previous fields done and employmentStatus Part-time Employment and Salary missing" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Part-time Employment"), None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service/salary")
       }
       "return 303 if user exists and previous fields done and employmentStatus missing" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service/employment")
       }
       "return 303 if user exists and previous fields done and eduDate missing and education false" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/tax").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe 303
@@ -127,8 +130,8 @@ class TaxControllerSpec extends ControllerSpecBase with MockFactory {
       }
       "return 303 and redirect to home if service returns Left" in {
         stubCall.returns(Left("Error"))
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Full-time Employment"), Some(30000))
         val result = controllerStubbed.show()(FakeRequest(GET, "/another-tax-service/tax")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)

@@ -24,6 +24,8 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -44,7 +46,7 @@ class EduDateController @Inject()(
           if (!user.education.get) {
             val filledForm = user.educationDate match {
               case None => EduDateForm.form
-              case Some(date) => EduDateForm.form.fill(EduDateData(date.getDate, date.getMonth+1, date.getYear+1900))
+              case Some(date) => EduDateForm.form.fill(EduDateData(date.getDayOfMonth, date.getMonthValue, date.getYear))
             }
             Future.successful(Ok(eduDatePage(filledForm, summary)))
           } else Future.successful(Redirect(routes.SummaryController.show))
@@ -57,7 +59,7 @@ class EduDateController @Inject()(
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
     val controllerRoute = if (!summary) routes.EmpController.show else routes.SummaryController.show
     val homeRoute = routes.HelloWorldController.helloWorld
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    val format = DateTimeFormatter.ofPattern("dd-M-yyyy")
 
     request.session.get("user") match {
       case None => Future.successful(Redirect(homeRoute))
@@ -67,7 +69,8 @@ class EduDateController @Inject()(
           form.bindFromRequest().fold(
             formWithErrors => Future.successful(BadRequest(eduDatePage(formWithErrors, summary))),
             dataForm => {
-              val date = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
+              val month = dataForm.month.toString.format(DateTimeFormatter.ofPattern("M"))
+              val date = Some(LocalDate.parse(dataForm.day.toString+"-"+month+"-"+dataForm.year.toString, format))
               val updatedUser = user.copy(educationDate = date)
               val updatedUserAsJson = Json.toJson(updatedUser).toString()
 

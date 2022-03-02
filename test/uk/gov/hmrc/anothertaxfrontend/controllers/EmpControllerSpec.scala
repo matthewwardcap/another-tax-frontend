@@ -26,6 +26,9 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.test.CSRFTokenHelper._
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class EmpControllerSpec extends ControllerSpecBase {
 
   override def fakeApplication(): Application =
@@ -41,30 +44,30 @@ class EmpControllerSpec extends ControllerSpecBase {
   "EmpController" when {
     "calling show()" must {
       "return 200 (Ok) if user exists and previous fields done and education true" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(true), None, None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/employment").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
       }
       "return HTML if user exists and previous fields done and education true" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(true), None, None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/employment").withSession("user" -> Json.toJson(user.copy()).toString))
         contentType(result) mustBe Some("text/html")
         charset(result) mustBe Some("utf-8")
       }
       "return 200 (Ok) if user exists and previous fields done and education false" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/employment").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
       }
       "return 200 (Ok) if user exists and field already filled and education false" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), Some("Unemployed"), None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/employment").withSession("user" -> Json.toJson(user.copy()).toString))
         status(result) mustBe OK
@@ -92,8 +95,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/edu-bool")
       }
       "return 303 and redirect to edu-date if edu-date missing and education false" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/employment")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
@@ -105,8 +108,8 @@ class EmpControllerSpec extends ControllerSpecBase {
 
     "calling post()" must {
       "return 303 (Redirect) to summary if user exists and form input is Unemployed" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), None, None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
@@ -116,8 +119,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/summary")
       }
       "return 303 (Redirect) to salary if user exists and form input is Full-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), None, None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
@@ -127,8 +130,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/salary")
       }
       "return 303 (Redirect) to salary if user exists and form input is Part-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), None, None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
@@ -143,8 +146,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
       "return 400 (BAD_REQUEST) and refresh if form has error" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
@@ -154,8 +157,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         contentAsString(result) must include ("This field is required")
       }
       "return 303 and redirect to summary if summary true and input Unemployed" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString, "summary" -> Json.toJson(true).toString)
@@ -165,8 +168,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/summary")
       }
       "return 303 and redirect to salary if summary true and input Full-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString, "summary" -> Json.toJson(true).toString)
@@ -176,8 +179,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/salary")
       }
       "return 303 and redirect to salary if summary true and input Part-time Employment" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/employment-post")
           .withSession("user" -> Json.toJson(user.copy()).toString, "summary" -> Json.toJson(true).toString)
@@ -205,8 +208,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/edu-bool")
       }
       "return 303 and redirect to edu-date if edu-date missing and education false" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
         val result = controller.show()(FakeRequest(GET, "/another-tax-service/employment")
           .withSession("user" -> Json.toJson(user).toString, "summary" -> Json.toJson(true).toString)
@@ -219,8 +222,8 @@ class EmpControllerSpec extends ControllerSpecBase {
 
     "calling back()" must {
       "return 303 (Redirect) if education false" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), Some(date), None, None)
         val result = controller.back()(FakeRequest(POST, "/another-tax-service/employment-back")
           .withSession("user" -> Json.toJson(user.copy()).toString)
@@ -229,8 +232,8 @@ class EmpControllerSpec extends ControllerSpecBase {
         header(LOCATION, result) mustBe Some("/another-tax-service/edu-date")
       }
       "return 303 (Redirect) if education true" in {
-        val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-        val date = format.parse("19-03-2000")
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(true), None, None, None)
         val result = controller.back()(FakeRequest(POST, "/another-tax-service/employment-back")
           .withSession("user" -> Json.toJson(user.copy()).toString)

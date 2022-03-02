@@ -24,6 +24,8 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.anothertaxfrontend.models.User
 import play.api.libs.json._
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
@@ -43,7 +45,7 @@ class DobController @Inject()(
         case Some(user) => if (user.firstName.isDefined) {
           val filledForm = user.dob match {
             case None => DobForm.form
-            case Some(date) => DobForm.form.fill(DobData(date.getDate, date.getMonth+1, date.getYear+1900))
+            case Some(date) => DobForm.form.fill(DobData(date.getDayOfMonth, date.getMonthValue, date.getYear))
           }
           Future.successful(Ok(dobPage(filledForm, summary)))
         } else Future.successful(Redirect(routes.NameController.show))
@@ -56,7 +58,7 @@ class DobController @Inject()(
     val controllerRoute = if (!summary) uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show else
       uk.gov.hmrc.anothertaxfrontend.controllers.routes.SummaryController.show
     val homeRoute = uk.gov.hmrc.anothertaxfrontend.controllers.routes.HelloWorldController.helloWorld
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    val format = DateTimeFormatter.ofPattern("dd-M-yyyy")
 
     request.session.get("user") match {
       case None => Future.successful(Redirect(homeRoute))
@@ -66,7 +68,8 @@ class DobController @Inject()(
           form.bindFromRequest().fold(
             formWithErrors => Future.successful(BadRequest(dobPage(formWithErrors, summary))),
             dataForm => {
-              val date = Option(format.parse(dataForm.day.toString+"-"+dataForm.month.toString+"-"+dataForm.year.toString))
+              val month = dataForm.month.toString.format(DateTimeFormatter.ofPattern("M"))
+              val date = Some(LocalDate.parse(dataForm.day.toString+"-"+month+"-"+dataForm.year.toString, format))
               val updatedUser = user.copy(dob = date)
               val updatedUserAsJson = Json.toJson(updatedUser).toString()
 

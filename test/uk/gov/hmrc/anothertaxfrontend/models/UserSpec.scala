@@ -19,10 +19,13 @@ package uk.gov.hmrc.anothertaxfrontend.models
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.anothertaxfrontend.core.UnitSpec
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class UserSpec extends UnitSpec{
 
-  private val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
-  private val date = format.parse("19-03-2000")
+  private val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+  private val date = LocalDate.parse("19-03-2000", format)
   private val user = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), Some(date), Some("Full-time Employment"), Some(30000))
   private val userJson: JsValue = Json.obj(
     "firstName" -> user.firstName,
