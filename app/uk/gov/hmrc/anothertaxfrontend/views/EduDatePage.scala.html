@@ -30,7 +30,12 @@
     }
 
     @if(form.hasErrors) {
-        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map("day" -> "educationDate-day", "month" -> "educationDate-month", "year" -> "educationDate-year")))
+        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map(
+            "day" -> "educationDate-day",
+            "month" -> "educationDate-month",
+            "year" -> "educationDate-year",
+            "" -> "educationDate-day" // this for the date
+        )))
     }
 
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.post) {

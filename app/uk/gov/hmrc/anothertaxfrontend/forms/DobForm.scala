@@ -18,7 +18,8 @@ package uk.gov.hmrc.anothertaxfrontend.forms
 import play.api.data.Forms._
 import play.api.data.Form
 import play.api.data.validation.Constraints._
-import java.time.Year
+
+import java.time.{LocalDate, Year}
 
 case class DobData(
                  day:Int,
@@ -30,7 +31,8 @@ object DobForm {
   val form: Form[DobData] = Form(mapping(
     "day" -> number.verifying(min(1), max(31)),
     "month" -> number.verifying(min(1), max(12)),
-    "year" -> number.verifying(min(1850), max(Year.now.getValue))
+    "year" -> number.verifying(min(1850))
   )(DobData.apply)(DobData.unapply)
+    .verifying("Date of birth can't be in the future", model => !LocalDate.of(model.year, model.month, model.day).isAfter(LocalDate.now))
   )
 }

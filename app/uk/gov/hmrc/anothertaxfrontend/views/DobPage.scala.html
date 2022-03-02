@@ -30,7 +30,12 @@
     }
 
     @if(form.hasErrors) {
-        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map("day" -> "dob-day", "month" -> "dob-month", "year" -> "dob-year")))
+        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map(
+            "day" -> "dob-day",
+            "month" -> "dob-month",
+            "year" -> "dob-year",
+            "" -> "dob-day" // this for the date
+        )))
     }
 
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.post) {
