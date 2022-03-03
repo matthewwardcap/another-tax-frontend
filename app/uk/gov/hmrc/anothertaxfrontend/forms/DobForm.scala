@@ -20,6 +20,7 @@ import play.api.data.Form
 import play.api.data.validation.Constraints._
 
 import java.time.{LocalDate, Year}
+import scala.util.Try
 
 case class DobData(
                  day:Int,
@@ -29,9 +30,23 @@ case class DobData(
 
 object DobForm {
   val form: Form[DobData] = Form(mapping(
-    "day" -> number.verifying(min(1), max(31)),
-    "month" -> number.verifying(min(1), max(12)),
-    "year" -> number.verifying(min(1850))
+    "day" -> text
+      .verifying("Enter a Day", value => value.nonEmpty)
+      .verifying("Day must be a number", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .transform[Int](_.toInt, _.toString)
+      .verifying("Day must be above 0", i => i > 0)
+      .verifying("Day must be be 31 or below", i => i < 32),
+    "month" -> text
+      .verifying("Enter a Month", value => value.nonEmpty)
+      .verifying("Month must be a number", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .transform[Int](_.toInt, _.toString)
+      .verifying("Month must be above 0", i => i > 0)
+      .verifying("Month must be 12 or below", i => i < 13),
+    "year" -> text
+      .verifying("Enter a Year", value => value.nonEmpty)
+      .verifying("Year must be a number", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .transform[Int](_.toInt, _.toString)
+      .verifying("Year must be above 1850", i => i > 1850)
   )(DobData.apply)(DobData.unapply)
     .verifying("Date of birth can't be in the future", model => !LocalDate.of(model.year, model.month, model.day).isAfter(LocalDate.now))
   )

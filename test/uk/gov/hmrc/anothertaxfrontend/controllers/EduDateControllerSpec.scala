@@ -118,16 +118,71 @@ class EduDateControllerSpec extends ControllerSpecBase {
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
-      "return 400 (BAD_REQUEST) and refresh if form has error" in {
+      "return 400 (BAD_REQUEST) and refresh if form missing day" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         val date = LocalDate.parse("19-03-2000", format)
         val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
-        val result = controller.post()(FakeRequest(POST, "/another-tax-service/edu-date-post")
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
-          .withFormUrlEncodedBody("day" -> "", "month" -> "", "year" -> "").withCSRFToken
+          .withFormUrlEncodedBody("day" -> "", "month" -> "3", "year" -> "2000").withCSRFToken
         )
         status(result) mustBe BAD_REQUEST
-        contentAsString(result) must include ("Numeric value expected")
+        contentAsString(result) must include ("Enter a Day")
+      }
+      "return 400 (BAD_REQUEST) and refresh if form missing month" in {
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("day" -> "19", "month" -> "", "year" -> "2000").withCSRFToken
+        )
+        status(result) mustBe BAD_REQUEST
+        contentAsString(result) must include ("Enter a Month")
+      }
+      "return 400 (BAD_REQUEST) and refresh if form missing year" in {
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "").withCSRFToken
+        )
+        status(result) mustBe BAD_REQUEST
+        contentAsString(result) must include ("Enter a Year")
+      }
+      "return 400 (BAD_REQUEST) and refresh if day not number" in {
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("day" -> "a", "month" -> "3", "year" -> "2000").withCSRFToken
+        )
+        status(result) mustBe BAD_REQUEST
+        contentAsString(result) must include ("Day must be a number")
+      }
+      "return 400 (BAD_REQUEST) and refresh if month not number" in {
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("day" -> "19", "month" -> "a", "year" -> "2000").withCSRFToken
+        )
+        status(result) mustBe BAD_REQUEST
+        contentAsString(result) must include ("Month must be a number")
+      }
+      "return 400 (BAD_REQUEST) and refresh if year not number" in {
+        val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse("19-03-2000", format)
+        val user = User(Some("first"), Some("middle"), Some("first"), Some(date), Some(false), None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/dob-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("day" -> "19", "month" -> "3", "year" -> "a").withCSRFToken
+        )
+        status(result) mustBe BAD_REQUEST
+        contentAsString(result) must include ("Year must be a number")
       }
       "return 303 and redirect to summary if summary true" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")

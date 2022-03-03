@@ -60,7 +60,7 @@ class EduDateFormSpec extends UnitSpec {
       "result in a an error against the year field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> "1800"))
         val error = result("year").error.getOrElse(fail("error against year field not generated"))
-        error.message mustBe "error.min"
+        error.message mustBe "Year must be above 1850"
       }
     }
 
@@ -68,7 +68,7 @@ class EduDateFormSpec extends UnitSpec {
       "result in a an error against the day field" in {
         val result = form.bind(Map("day" -> "0", "month" -> "3", "year" -> "2000"))
         val error = result("day").error.getOrElse(fail("error against day field not generated"))
-        error.message mustBe "error.min"
+        error.message mustBe "Day must be above 0"
       }
     }
 
@@ -76,7 +76,7 @@ class EduDateFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "0", "year" -> "2000"))
         val error = result("month").error.getOrElse(fail("error against month field not generated"))
-        error.message mustBe "error.min"
+        error.message mustBe "Month must be above 0"
       }
     }
 
@@ -84,7 +84,7 @@ class EduDateFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "32", "month" -> "3", "year" -> "2000"))
         val error = result("day").error.getOrElse(fail("error against day field not generated"))
-        error.message mustBe "error.max"
+        error.message mustBe "Day must be be 31 or below"
       }
     }
 
@@ -92,7 +92,55 @@ class EduDateFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "13", "year" -> "2000"))
         val error = result("month").error.getOrElse(fail("error against month field not generated"))
-        error.message mustBe "error.max"
+        error.message mustBe "Month must be 12 or below"
+      }
+    }
+
+    "day blank" must {
+      "result in a an error against the day field" in {
+        val result = form.bind(Map("day" -> "", "month" -> "3", "year" -> "2000"))
+        val error = result("day").error.getOrElse(fail("error against day field not generated"))
+        error.message mustBe "Enter a Day"
+      }
+    }
+
+    "month blank" must {
+      "result in a an error against the month field" in {
+        val result = form.bind(Map("day" -> "19", "month" -> "", "year" -> "2000"))
+        val error = result("month").error.getOrElse(fail("error against month field not generated"))
+        error.message mustBe "Enter a Month"
+      }
+    }
+
+    "year blank" must {
+      "result in a an error against the year field" in {
+        val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> ""))
+        val error = result("year").error.getOrElse(fail("error against year field not generated"))
+        error.message mustBe "Enter a Year"
+      }
+    }
+
+    "day not number" must {
+      "result in a an error against the day field" in {
+        val result = form.bind(Map("day" -> "a", "month" -> "3", "year" -> "2000"))
+        val error = result("day").error.getOrElse(fail("error against day field not generated"))
+        error.message mustBe "Day must be a number"
+      }
+    }
+
+    "month not number" must {
+      "result in a an error against the month field" in {
+        val result = form.bind(Map("day" -> "19", "month" -> "a", "year" -> "2000"))
+        val error = result("month").error.getOrElse(fail("error against month field not generated"))
+        error.message mustBe "Month must be a number"
+      }
+    }
+
+    "year not number" must {
+      "result in a an error against the year field" in {
+        val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> "a"))
+        val error = result("year").error.getOrElse(fail("error against year field not generated"))
+        error.message mustBe "Year must be a number"
       }
     }
 

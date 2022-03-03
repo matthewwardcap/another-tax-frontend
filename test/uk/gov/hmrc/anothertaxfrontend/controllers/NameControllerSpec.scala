@@ -85,14 +85,23 @@ class NameControllerSpec extends ControllerSpecBase {
         status(result) mustBe 303
         header(LOCATION, result) mustBe Some("/another-tax-service")
       }
-      "return 400 (BAD_REQUEST) and refresh if form has error" in {
+      "return 400 (BAD_REQUEST) and refresh if form missing first name" in {
         val user = User(None, None, None, None, None, None, None, None)
         val result = controller.post()(FakeRequest(POST, "/another-tax-service/name-post")
           .withSession("user" -> Json.toJson(user.copy()).toString)
-          .withFormUrlEncodedBody("firstName" -> "", "middleName" -> "", "lastName" -> "").withCSRFToken
+          .withFormUrlEncodedBody("firstName" -> "", "middleName" -> "", "lastName" -> "last").withCSRFToken
         )
         status(result) mustBe BAD_REQUEST
-        contentAsString(result) must include ("This field is required")
+        contentAsString(result) must include ("Enter your first name")
+      }
+      "return 400 (BAD_REQUEST) and refresh if form missing last name" in {
+        val user = User(None, None, None, None, None, None, None, None)
+        val result = controller.post()(FakeRequest(POST, "/another-tax-service/name-post")
+          .withSession("user" -> Json.toJson(user.copy()).toString)
+          .withFormUrlEncodedBody("firstName" -> "first", "middleName" -> "", "lastName" -> "").withCSRFToken
+        )
+        status(result) mustBe BAD_REQUEST
+        contentAsString(result) must include ("Enter your last name")
       }
       "return 303 and redirect to summary if summary true" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")

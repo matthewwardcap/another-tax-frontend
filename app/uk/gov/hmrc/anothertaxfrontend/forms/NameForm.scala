@@ -27,9 +27,9 @@ case class Data(
 
 object NameForm {
   val form: Form[Data] = Form(mapping(
-    "firstName" -> nonEmptyText,
+    "firstName" -> text.verifying("Enter your first name", value => value.trim.nonEmpty),
     "middleName" -> optional(text),
-    "lastName" -> nonEmptyText
+    "lastName" -> text.verifying("Enter your last name", value => value.trim.nonEmpty)
   )(Data.apply)(Data.unapply)
   )
 }

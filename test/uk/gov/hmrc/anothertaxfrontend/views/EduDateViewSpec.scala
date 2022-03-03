@@ -23,7 +23,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.anothertaxfrontend.forms.EduDateForm
 import uk.gov.hmrc.anothertaxfrontend.views.html.EduDatePage
 
-class EduDobViewSpec extends ViewSpecBase {
+class EduDateViewSpec extends ViewSpecBase {
 
   "EduDobPage" when {
     "rendering a view with no errors and not reached summary" must {
