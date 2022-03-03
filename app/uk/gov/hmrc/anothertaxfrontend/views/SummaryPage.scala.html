@@ -24,133 +24,53 @@
 
 @formatType = @{DateTimeFormatter.ofPattern("dd-MM-yyyy")}
 
+@row(value: String, key: String, url: String) = @{
+    if (value != "") {
+        Some(SummaryListRow(
+            key = Key(content = Text(messages(key))),
+            value = Value(content = Text(value)),
+            actions = Some(Actions(
+                items = Seq(
+                    ActionItem(
+                        href = url,
+                        content = Text(messages("button.change")),
+                        visuallyHiddenText = Some(key)
+                    )
+                )
+            ))
+        ))
+    } else {
+        None
+    }
+}
+
+@seq = @{
+    Seq(
+        row(user.firstName.getOrElse("") + " " + user.middleName.getOrElse("") + " " + user.lastName.getOrElse(""), "list.name", uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.show.url),
+        row(user.dob match {
+            case None => ""
+            case Some(value) => value.format(formatType)
+        }, "list.dob", uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show.url),
+        row(user.education match {
+            case None => ""
+            case Some(value) => if (value) "Yes" else "No"
+        }, "list.eduBool", uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show.url),
+        row(user.educationDate match {
+            case None => ""
+            case Some(value) => value.format(formatType)
+        }, "list.eduDate", uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show.url),
+        row(user.employmentStatus.getOrElse(""), "list.emp", uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show.url),
+        row(user.salary match {
+            case None => ""
+            case Some(value) => "£" + String.format("%.2f", value.bigDecimal)
+        }, "list.salary", uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url)
+    ).flatten
+}
+
 @layout(pageTitle = Some(messages("service.name"))) {
     <h1 class="govuk-heading-xl">@{messages("summaryPage.title")}</h1>
 
-    @govukSummaryList(SummaryList(
-        rows = Seq(
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("list.name"))
-                ),
-                value = Value(
-                    content = Text(
-                        user.firstName.getOrElse("") + " " + user.middleName.getOrElse("") + " " + user.lastName.getOrElse("")
-                    )
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        ActionItem(
-                            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.show.url,
-                            content = Text("Change"),
-                            visuallyHiddenText = Some("name")
-                        )
-                    )
-                ))
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("list.dob"))
-                ),
-                value = Value(
-                    content = Text(user.dob match {
-                        case None => ""
-                        case Some(value) => value.format(formatType)
-                    })
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        ActionItem(
-                            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.show.url,
-                            content = Text("Change"),
-                            visuallyHiddenText = Some("date of birth")
-                        )
-                    )
-                ))
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("list.eduBool"))
-                ),
-                value = Value(
-                    content = Text(user.education match {
-                        case None => ""
-                        case Some(value) => if (value) "Yes" else "No"
-                    })
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        ActionItem(
-                            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduBoolController.show.url,
-                            content = Text("Change"),
-                            visuallyHiddenText = Some("still in education")
-                        )
-                    )
-                ))
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("list.eduDate"))
-                ),
-                value = Value(
-                    content = Text(user.educationDate match {
-                        case None => ""
-                        case Some(value) => value.format(formatType)
-                    })
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        if (!user.education.getOrElse(false)) {
-                            ActionItem(
-                                href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EduDateController.show.url,
-                                content = Text("Change"),
-                                visuallyHiddenText = Some("date leaving education")
-                            )
-                        } else ActionItem()
-                    )
-                ))
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("list.emp"))
-                ),
-                value = Value(
-                    content = Text(user.employmentStatus.getOrElse(""))
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        ActionItem(
-                            href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show.url,
-                            content = Text("Change"),
-                            visuallyHiddenText = Some("employment status")
-                        )
-                    )
-                ))
-            ),
-            SummaryListRow(
-                key = Key(
-                    content = Text(messages("list.salary"))
-                ),
-                value = Value(
-                    content = Text(user.salary match {
-                        case None => ""
-                        case Some(value) => "£" + String.format("%.2f", value.bigDecimal)
-                    })
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        if (user.employmentStatus.getOrElse("Unemployed") != "Unemployed") {
-                            ActionItem(
-                                href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url,
-                                content = Text("Change"),
-                                visuallyHiddenText = Some("salary")
-                            )
-                        } else ActionItem()
-                    )
-                ))
-            )
-        )
-    ))
+    @govukSummaryList(SummaryList(rows = seq))
 
     @govukButton(Button(
         href = Some(uk.gov.hmrc.anothertaxfrontend.controllers.routes.TaxController.show.url),

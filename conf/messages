@@ -4,6 +4,7 @@ service.text = Enter your current education and annual salary to see what you're
 button.start = Start now
 button.save = Save and continue
 button.back = Back
+button.change = Change
 
 date.example = For example, 31 3 1980
 eduDate.example = For example, 31 3 2005

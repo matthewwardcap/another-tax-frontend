@@ -88,12 +88,49 @@ class SummaryViewSpec extends ViewSpecBase {
         elementText("""[class="govuk-summary-list__value"]""") mustBe "first last"
       }
 
-      "have a label associated to the Education finish date empty" in {
-        document.select("""[class="govuk-summary-list__value"]""").get(3).text mustBe ""
+      "have a label associated to the Education empty" in {
+        document.select("""[class="govuk-summary-list__value"]""").get(3).text mustBe "Unemployed"
       }
 
       "have a label associated to the Salary empty" in {
-        document.select("""[class="govuk-summary-list__value"]""").get(5).text mustBe ""
+        intercept[Exception] { document.select("""[class="govuk-summary-list__value"]""").get(5) }
+      }
+
+    }
+
+    "rendering a view with missing fields" must {
+
+      lazy val target: SummaryPage = inject[SummaryPage]
+      lazy val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+      lazy val date = LocalDate.parse("19-03-2000", format)
+      lazy val user: User = User(None, Some("middle"), None, None, None,
+        None, None, None)
+      lazy val result: Html = target(user)
+      lazy implicit val document: Document = Jsoup.parse(result.body)
+
+
+      "have a label associated to the Name output with the correct text" in {
+        elementText("""[class="govuk-summary-list__value"]""") mustBe "middle"
+      }
+
+      "have a label associated to the Dob date empty" in {
+        intercept[Exception] { document.select("""[class="govuk-summary-list__value"]""").get(1) }
+      }
+
+      "have a label associated to the Education empty" in {
+        intercept[Exception] { document.select("""[class="govuk-summary-list__value"]""").get(2) }
+      }
+
+      "have a label associated to the Education date empty" in {
+        intercept[Exception] { document.select("""[class="govuk-summary-list__value"]""").get(3) }
+      }
+
+      "have a label associated to the Employment Status empty" in {
+        intercept[Exception] { document.select("""[class="govuk-summary-list__value"]""").get(4) }
+      }
+
+      "have a label associated to the Salary empty" in {
+        intercept[Exception] { document.select("""[class="govuk-summary-list__value"]""").get(5) }
       }
 
     }
