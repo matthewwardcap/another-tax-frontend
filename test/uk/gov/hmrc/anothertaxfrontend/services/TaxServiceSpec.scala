@@ -31,13 +31,15 @@ class TaxServiceSpec extends ControllerSpecBase{
 
     val format: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val date: LocalDate = LocalDate.parse("19-03-2000", format)
-    val fullUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Full-time Employment"), Some(30000))
-    val partUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Part-time Employment"), Some(30000))
-    val unemployedUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Unemployed"), None)
+    val dateUnder: LocalDate = LocalDate.parse("19-03-2021", format)
+    val fullUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), Some(date), Some("Full-time Employment"), Some(30000))
+    val partUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), Some(date), Some("Part-time Employment"), Some(30000))
+    val unemployedUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), Some(date), Some("Unemployed"), None)
     val trueUser: User        = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(true), None, Some("Full-time Employment"), Some(30000))
-    val missingSalUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some("Full-time Employment"), None)
-    val missingEmpUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), None, Some(""), Some(30000))
+    val missingSalUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), Some(date), Some("Full-time Employment"), None)
+    val missingEmpUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), Some(false), Some(date), Some(""), Some(30000))
     val missingEduUser: User  = User(Some("first"), Some("middle"), Some("last"), Some(date), None, None, Some("Full-time Employment"), Some(30000))
+    val under18User: User  = User(Some("first"), Some("middle"), Some("last"), Some(dateUnder), Some(false), Some(date), Some("Full-time Employment"), Some(30000))
   }
 
   "TaxController" when {
@@ -61,6 +63,10 @@ class TaxServiceSpec extends ControllerSpecBase{
         }
         "User is missing education" in new Test {
           val result: Either[String, BigDecimal] = service.post(missingEduUser)
+          result mustBe Right{0}
+        }
+        "User is under 18" in new Test {
+          val result: Either[String, BigDecimal] = service.post(under18User)
           result mustBe Right{0}
         }
       }

@@ -18,6 +18,7 @@ package uk.gov.hmrc.anothertaxfrontend.services
 
 import uk.gov.hmrc.anothertaxfrontend.models.User
 
+import java.time.{LocalDate, Period}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -30,7 +31,7 @@ class TaxService {
       case Some(sal) => Right(sal - (sal * i))
     }
 
-    if (user.education.getOrElse(true) || user.employmentStatus.getOrElse("") == "Unemployed") {
+    if (user.education.getOrElse(true) || user.employmentStatus.getOrElse("") == "Unemployed" || Period.between(user.dob.getOrElse(LocalDate.now), LocalDate.now).getYears < 18) {
       Right(BigDecimal(0))
     } else if (user.employmentStatus.getOrElse("") == "Part-time Employment") {
       val tax = 0.95
