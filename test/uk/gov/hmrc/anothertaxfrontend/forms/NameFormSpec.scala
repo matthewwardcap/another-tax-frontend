@@ -34,9 +34,25 @@ class NameFormSpec extends UnitSpec {
 
     "no last name is supplied" must {
       "result in a an error against the last name field" in {
-        val result = form.bind(Map("firstName" -> "Smith"))
+        val result = form.bind(Map("firstName" -> "John"))
         val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
         error.message mustBe "error.required"
+      }
+    }
+
+    "first name is blank" must {
+      "result in a an error against the first name field" in {
+        val result = form.bind(Map("firstName" -> "", "lastName" -> "Smith"))
+        val error = result("firstName").error.getOrElse(fail("error against first name field not generated"))
+        error.message mustBe "Enter your first name"
+      }
+    }
+
+    "last name is blank" must {
+      "result in a an error against the last name field" in {
+        val result = form.bind(Map("firstName" -> "John", "lastName" -> ""))
+        val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
+        error.message mustBe "Enter your last name"
       }
     }
 
