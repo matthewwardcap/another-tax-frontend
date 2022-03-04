@@ -154,7 +154,7 @@ class EmpControllerSpec extends ControllerSpecBase {
           .withFormUrlEncodedBody("employmentStatus" -> "").withCSRFToken
         )
         status(result) mustBe BAD_REQUEST
-        contentAsString(result) must include ("This field is required")
+        contentAsString(result) must include ("Choose an employment option")
       }
       "return 303 and redirect to summary if summary true and input Unemployed" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")

@@ -101,7 +101,7 @@ class EmpViewSpec extends ViewSpecBase {
       lazy implicit val document: Document = Jsoup.parse(result.body)
 
       "have an error message against the form" in {
-        elementText("form p#employmentStatus-error") mustBe "Error: This field is required"
+        elementText("form p#employmentStatus-error") mustBe "Error: Choose an employment option"
       }
 
     }

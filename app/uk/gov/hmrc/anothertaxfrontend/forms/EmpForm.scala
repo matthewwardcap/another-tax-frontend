@@ -25,7 +25,9 @@ case class EmpData(
 
 object EmpForm {
   val form: Form[EmpData] = Form(mapping(
-    "employmentStatus" -> nonEmptyText
+    "employmentStatus" -> optional(text)
+      .verifying("Choose an employment option", value => value.isDefined)
+      .transform[String](_.get, Some(_))
   )(EmpData.apply)(EmpData.unapply)
   )
 }
