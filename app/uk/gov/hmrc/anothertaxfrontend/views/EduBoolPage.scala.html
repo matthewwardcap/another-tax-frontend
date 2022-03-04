@@ -40,12 +40,12 @@
                 RadioItem(
                     content = Text(messages("radio.no")),
                     value = Some("false"),
-                    checked = if(form("education").value.getOrElse("false") == "false") true else false
+                    checked = if(form("education").value.getOrElse("") == "false") true else false
                 ),
                 RadioItem(
                     content = Text(messages("radio.yes")),
                     value = Some("true"),
-                    checked = if(form("education").value.getOrElse("false") == "true") true else false
+                    checked = if(form("education").value.getOrElse("") == "true") true else false
                 )
             )
         ))

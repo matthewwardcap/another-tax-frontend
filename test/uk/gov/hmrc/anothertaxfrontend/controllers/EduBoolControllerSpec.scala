@@ -126,7 +126,7 @@ class EduBoolControllerSpec extends ControllerSpecBase {
           .withFormUrlEncodedBody("education" -> "").withCSRFToken
         )
         status(result) mustBe BAD_REQUEST
-        contentAsString(result) must include ("error.boolean")
+        contentAsString(result) must include ("Choose an education option")
       }
       "return 303 and redirect to summary if summary true" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
