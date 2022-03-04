@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.anothertaxfrontend.models.User
 @import java.time.format.DateTimeFormatter
+@import java.text.DecimalFormat
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukSummaryList : GovukSummaryList)
 @(user: User)(implicit request: Request[_], messages: Messages)
@@ -62,7 +63,8 @@
         row(user.employmentStatus.getOrElse(""), "list.emp", uk.gov.hmrc.anothertaxfrontend.controllers.routes.EmpController.show.url),
         row(user.salary match {
             case None => ""
-            case Some(value) => "£" + String.format("%.2f", value.bigDecimal)
+            //case Some(value) => "£" + String.format("%.2f", value.bigDecimal)
+            case Some(value) => "£" + new DecimalFormat("#,###.00").format(value.bigDecimal)
         }, "list.salary", uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url)
     ).flatten
 }

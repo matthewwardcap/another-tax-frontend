@@ -40,7 +40,7 @@ class TaxViewSpec extends ViewSpecBase {
       }
 
       "have a inset text associated to the Tax output with the correct text" in {
-        elementText("""[class="govuk-inset-text"]""") mustBe "Total amount payable: £3000.00"
+        elementText("""[class="govuk-inset-text"]""") mustBe "Total amount payable: £3,000.00"
       }
 
     }
@@ -57,7 +57,7 @@ class TaxViewSpec extends ViewSpecBase {
       }
 
       "have a inset text associated to the Tax output with the correct text" in {
-        elementText("""[class="govuk-inset-text"]""") mustBe "Total amount payable: £3000.06"
+        elementText("""[class="govuk-inset-text"]""") mustBe "Total amount payable: £3,000.06"
       }
 
     }

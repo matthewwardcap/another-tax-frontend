@@ -53,7 +53,7 @@ class SummaryControllerSpec extends ControllerSpecBase {
         contentAsString(result) must include ("19-03-2000")
         contentAsString(result) must include ("Yes")
         contentAsString(result) must include ("Full-time Employment")
-        contentAsString(result) must include ("£30000")
+        contentAsString(result) must include ("£30,000.00")
       }
       "return HTML if user exists and previous fields done and employmentStatus Full-time Employment" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -73,7 +73,7 @@ class SummaryControllerSpec extends ControllerSpecBase {
         contentAsString(result) must include ("19-03-2000")
         contentAsString(result) must include ("Yes")
         contentAsString(result) must include ("Part-time Employment")
-        contentAsString(result) must include ("£30000")
+        contentAsString(result) must include ("£30,000.00")
       }
       "return 200 (Ok) if user exists and previous fields done and employmentStatus Unemployed Employment and salary missing" in {
         val format = DateTimeFormatter.ofPattern("dd-MM-yyyy")

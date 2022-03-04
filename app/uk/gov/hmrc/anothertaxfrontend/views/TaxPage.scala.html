@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.anothertaxfrontend.views.html.Layout
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import java.text.DecimalFormat
 
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukPanel: GovukPanel, govukInsetText: GovukInsetText)
 @(total: BigDecimal)(implicit request: Request[_], messages: Messages)
@@ -28,7 +29,7 @@
     ))
 
     @govukInsetText(InsetText(
-        content = Text("Total amount payable: £" + total.toString)
+        content = Text("Total amount payable: £" + new DecimalFormat("#,###.00").format(total))
     ))
 
 }
