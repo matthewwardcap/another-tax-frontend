@@ -35,8 +35,56 @@ class NameFormSpec extends UnitSpec {
     "no last name is supplied" must {
       "result in a an error against the last name field" in {
         val result = form.bind(Map("firstName" -> "Smith"))
-        val error = result("lastName").error.getOrElse(fail("error against first name field not generated"))
+        val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
         error.message mustBe "error.required"
+      }
+    }
+
+    "first name is number" must {
+      "result in a an error against the first name field" in {
+        val result = form.bind(Map("firstName" -> "1234"))
+        val error = result("firstName").error.getOrElse(fail("error against first name field not generated"))
+        error.message mustBe "First name can't contain number"
+      }
+    }
+
+    "middle name is number" must {
+      "result in a an error against the middle name field" in {
+        val result = form.bind(Map("middleName" -> "1234"))
+        val error = result("middleName").error.getOrElse(fail("error against middle name field not generated"))
+        error.message mustBe "Middle name can't contain number"
+      }
+    }
+
+    "last name is number" must {
+      "result in a an error against the last name field" in {
+        val result = form.bind(Map("lastName" -> "1234"))
+        val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
+        error.message mustBe "Last name can't contain number"
+      }
+    }
+
+    "first name contains number" must {
+      "result in a an error against the first name field" in {
+        val result = form.bind(Map("firstName" -> "test1234"))
+        val error = result("firstName").error.getOrElse(fail("error against first name field not generated"))
+        error.message mustBe "First name can't contain number"
+      }
+    }
+
+    "middle name contains number" must {
+      "result in a an error against the middle name field" in {
+        val result = form.bind(Map("middleName" -> "test1234"))
+        val error = result("middleName").error.getOrElse(fail("error against middle name field not generated"))
+        error.message mustBe "Middle name can't contain number"
+      }
+    }
+
+    "last name contains number" must {
+      "result in a an error against the last name field" in {
+        val result = form.bind(Map("lastName" -> "test1234"))
+        val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
+        error.message mustBe "Last name can't contain number"
       }
     }
 

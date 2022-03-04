@@ -27,9 +27,13 @@ case class Data(
 
 object NameForm {
   val form: Form[Data] = Form(mapping(
-    "firstName" -> text.verifying("Enter your first name", value => value.trim.nonEmpty),
-    "middleName" -> optional(text),
-    "lastName" -> text.verifying("Enter your last name", value => value.trim.nonEmpty)
+    "firstName" -> text
+      .verifying("Enter your first name", value => value.trim.nonEmpty)
+      .verifying("First name can't contain number", value => !value.exists(_.isDigit) || value.isEmpty),
+    "middleName" -> optional(text).verifying("Middle name can't contain number", value => !value.getOrElse("").exists(_.isDigit) || value.isEmpty),
+    "lastName" -> text
+      .verifying("Enter your last name", value => value.trim.nonEmpty)
+      .verifying("Last name can't contain number", value => !value.exists(_.isDigit) || value.isEmpty)
   )(Data.apply)(Data.unapply)
   )
 }
