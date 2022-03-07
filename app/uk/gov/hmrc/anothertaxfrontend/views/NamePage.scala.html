@@ -26,7 +26,7 @@
     <h1 class="govuk-heading-xl">@{messages("namePage.title")}</h1>
 
     @if(form.hasErrors) {
-        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName")))
+        @govukErrorSummary(ErrorSummary().withFormErrorsAsText(form, Map(messages("firstName") -> "firstName", messages("middleName") -> "middleName", messages("lastName") -> "lastName")))
     }
 
     @formHelper(uk.gov.hmrc.anothertaxfrontend.controllers.routes.NameController.post) {

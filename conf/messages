@@ -41,3 +41,9 @@ list.emp = Employment Status
 list.salary = Salary
 
 taxPage.title = Application Complete
+
+form.error.firstname.blank = Enter your first name
+form.error.firstname.number = First name can't contain number
+form.error.middlename.number = Middle name can't contain number
+form.error.lastname.blank = Enter your last name
+form.error.lastname.number = Last name can't contain number

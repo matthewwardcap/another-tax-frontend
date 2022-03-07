@@ -44,7 +44,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the first name field" in {
         val result = form.bind(Map("firstName" -> "", "lastName" -> "Smith"))
         val error = result("firstName").error.getOrElse(fail("error against first name field not generated"))
-        error.message mustBe "Enter your first name"
+        error.message mustBe "form.error.firstname.blank"
       }
     }
 
@@ -52,7 +52,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the last name field" in {
         val result = form.bind(Map("firstName" -> "John", "lastName" -> ""))
         val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
-        error.message mustBe "Enter your last name"
+        error.message mustBe "form.error.lastname.blank"
       }
     }
 
@@ -60,7 +60,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the first name field" in {
         val result = form.bind(Map("firstName" -> "1234"))
         val error = result("firstName").error.getOrElse(fail("error against first name field not generated"))
-        error.message mustBe "First name can't contain number"
+        error.message mustBe "form.error.firstname.number"
       }
     }
 
@@ -68,7 +68,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the middle name field" in {
         val result = form.bind(Map("middleName" -> "1234"))
         val error = result("middleName").error.getOrElse(fail("error against middle name field not generated"))
-        error.message mustBe "Middle name can't contain number"
+        error.message mustBe "form.error.middlename.number"
       }
     }
 
@@ -76,7 +76,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the last name field" in {
         val result = form.bind(Map("lastName" -> "1234"))
         val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
-        error.message mustBe "Last name can't contain number"
+        error.message mustBe "form.error.lastname.number"
       }
     }
 
@@ -84,7 +84,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the first name field" in {
         val result = form.bind(Map("firstName" -> "test1234"))
         val error = result("firstName").error.getOrElse(fail("error against first name field not generated"))
-        error.message mustBe "First name can't contain number"
+        error.message mustBe "form.error.firstname.number"
       }
     }
 
@@ -92,7 +92,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the middle name field" in {
         val result = form.bind(Map("middleName" -> "test1234"))
         val error = result("middleName").error.getOrElse(fail("error against middle name field not generated"))
-        error.message mustBe "Middle name can't contain number"
+        error.message mustBe "form.error.middlename.number"
       }
     }
 
@@ -100,7 +100,7 @@ class NameFormSpec extends UnitSpec {
       "result in a an error against the last name field" in {
         val result = form.bind(Map("lastName" -> "test1234"))
         val error = result("lastName").error.getOrElse(fail("error against last name field not generated"))
-        error.message mustBe "Last name can't contain number"
+        error.message mustBe "form.error.lastname.number"
       }
     }
 

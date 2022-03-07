@@ -17,7 +17,6 @@
 package uk.gov.hmrc.anothertaxfrontend.forms
 import play.api.data.Forms._
 import play.api.data.Form
-import play.api.data.validation.Constraints._
 
 case class Data(
                  firstName:String,
@@ -28,12 +27,12 @@ case class Data(
 object NameForm {
   val form: Form[Data] = Form(mapping(
     "firstName" -> text
-      .verifying("Enter your first name", value => value.trim.nonEmpty)
-      .verifying("First name can't contain number", value => !value.exists(_.isDigit)),
-    "middleName" -> optional(text).verifying("Middle name can't contain number", value => !value.getOrElse("").exists(_.isDigit) || value.isEmpty),
+      .verifying("form.error.firstname.blank", value => value.trim.nonEmpty)
+      .verifying("form.error.firstname.number", value => !value.exists(_.isDigit)),
+    "middleName" -> optional(text).verifying("form.error.middlename.number", value => !value.getOrElse("").exists(_.isDigit) || value.isEmpty),
     "lastName" -> text
-      .verifying("Enter your last name", value => value.trim.nonEmpty)
-      .verifying("Last name can't contain number", value => !value.exists(_.isDigit))
+      .verifying("form.error.lastname.blank", value => value.trim.nonEmpty)
+      .verifying("form.error.lastname.number", value => !value.exists(_.isDigit))
   )(Data.apply)(Data.unapply)
   )
 }
