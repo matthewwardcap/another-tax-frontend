@@ -64,6 +64,14 @@ class DobFormSpec extends UnitSpec {
       }
     }
 
+    "day is not in month" must {
+      "result in a an error against the entire form" in {
+        val result = form.bind(Map("day" -> "31", "month" -> "2", "year" -> "2000"))
+        val error = result("").error.getOrElse(fail("error against form not generated"))
+        error.message mustBe "Day not in month"
+      }
+    }
+
     "day is below 1" must {
       "result in a an error against the day field" in {
         val result = form.bind(Map("day" -> "0", "month" -> "3", "year" -> "2000"))

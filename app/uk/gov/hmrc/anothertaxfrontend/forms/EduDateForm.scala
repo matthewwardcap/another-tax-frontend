@@ -19,7 +19,8 @@ import play.api.data.Forms._
 import play.api.data.Form
 import play.api.data.validation.Constraints._
 
-import java.time.{LocalDate, Year}
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, YearMonth}
 import scala.util.Try
 
 case class EduDateData(
@@ -48,6 +49,7 @@ object EduDateForm {
       .transform[Int](_.toInt, _.toString)
       .verifying("Year must be above 1850", i => i > 1850)
   )(EduDateData.apply)(EduDateData.unapply)
-    .verifying("Can't have finished education in the future", model => !LocalDate.of(model.year, model.month, model.day).isAfter(LocalDate.now))
+    .verifying("Day not in month", model => model.day < YearMonth.from(LocalDate.of(model.year, model.month, 1)).atEndOfMonth().getDayOfMonth)
+    .verifying("Can't have finished education in the future", model => !LocalDate.parse(model.year.toString+"-"+model.month.toString+"-"+model.day.toString, DateTimeFormatter.ofPattern("yyyy-M-dd")).isAfter(LocalDate.now))
   )
 }
