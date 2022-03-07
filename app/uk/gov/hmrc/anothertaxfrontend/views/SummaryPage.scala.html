@@ -64,7 +64,7 @@
         row(user.salary match {
             case None => ""
             //case Some(value) => "£" + String.format("%.2f", value.bigDecimal)
-            case Some(value) => "£" + new DecimalFormat("#,###.00").format(value.bigDecimal)
+            case Some(value) => "£" + new DecimalFormat("#,##0.00").format(value.bigDecimal)
         }, "list.salary", uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.show.url)
     ).flatten
 }

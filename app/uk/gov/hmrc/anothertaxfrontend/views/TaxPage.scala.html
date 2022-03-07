@@ -29,7 +29,7 @@
     ))
 
     @govukInsetText(InsetText(
-        content = Text("Total amount payable: £" + new DecimalFormat("#,###.00").format(total))
+        content = Text("Total amount payable: £" + new DecimalFormat("#,##0.00").format(total))
     ))
 
 }
