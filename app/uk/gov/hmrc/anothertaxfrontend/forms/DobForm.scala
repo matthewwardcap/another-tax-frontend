@@ -32,24 +32,24 @@ case class DobData(
 object DobForm {
   val form: Form[DobData] = Form(mapping(
     "day" -> text
-      .verifying("Enter a Day", value => value.nonEmpty)
-      .verifying("Day must be a number", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .verifying("form.error.day.blank", value => value.nonEmpty)
+      .verifying("form.error.day.char", i => Try(i.toInt).isSuccess || i.isEmpty)
       .transform[Int](_.toInt, _.toString)
-      .verifying("Day must be above 0", i => i > 0)
-      .verifying("Day must be be 31 or below", i => i < 32),
+      .verifying("form.error.day.low", i => i > 0)
+      .verifying("form.error.day.high", i => i < 32),
     "month" -> text
-      .verifying("Enter a Month", value => value.nonEmpty)
-      .verifying("Month must be a number", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .verifying("form.error.month.blank", value => value.nonEmpty)
+      .verifying("form.error.month.char", i => Try(i.toInt).isSuccess || i.isEmpty)
       .transform[Int](_.toInt, _.toString)
-      .verifying("Month must be above 0", i => i > 0)
-      .verifying("Month must be 12 or below", i => i < 13),
+      .verifying("form.error.month.low", i => i > 0)
+      .verifying("form.error.month.high", i => i < 13),
     "year" -> text
-      .verifying("Enter a Year", value => value.nonEmpty)
-      .verifying("Year must be a number", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .verifying("form.error.year.blank", value => value.nonEmpty)
+      .verifying("form.error.year.char", i => Try(i.toInt).isSuccess || i.isEmpty)
       .transform[Int](_.toInt, _.toString)
-      .verifying("Year must be above 1850", i => i > 1850)
+      .verifying("form.error.year.low", i => i > 1850)
   )(DobData.apply)(DobData.unapply)
-    .verifying("Day not in month", model => model.day < YearMonth.from(LocalDate.of(model.year, model.month, 1)).atEndOfMonth().getDayOfMonth)
-    .verifying("Date of birth can't be in the future", model => !LocalDate.parse(model.year.toString+"-"+model.month.toString+"-"+model.day.toString, DateTimeFormatter.ofPattern("yyyy-M-dd")).isAfter(LocalDate.now))
+    .verifying("form.error.date.day", model => model.day < YearMonth.from(LocalDate.of(model.year, model.month, 1)).atEndOfMonth().getDayOfMonth)
+    .verifying("form.error.date.future", model => !LocalDate.parse(model.year.toString+"-"+model.month.toString+"-"+model.day.toString, DateTimeFormatter.ofPattern("yyyy-M-dd")).isAfter(LocalDate.now))
   )
 }

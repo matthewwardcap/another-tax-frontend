@@ -47,3 +47,17 @@ form.error.firstname.number = First name can't contain number
 form.error.middlename.number = Middle name can't contain number
 form.error.lastname.blank = Enter your last name
 form.error.lastname.number = Last name can't contain number
+
+form.error.day.blank = Enter a Day
+form.error.day.char = Day must be a number
+form.error.day.low = Day must be above 0
+form.error.day.high = Day must be 31 or below
+form.error.month.blank = Enter a Month
+form.error.month.char = Month must be a number
+form.error.month.low = Month must be above 0
+form.error.month.high = Day must be 12 or below
+form.error.year.blank = Enter a Year
+form.error.year.char = Year must be a number
+form.error.year.low = Year must be above 1850
+form.error.date.day = Day not in month
+form.error.date.future = Date of birth can't be in the future

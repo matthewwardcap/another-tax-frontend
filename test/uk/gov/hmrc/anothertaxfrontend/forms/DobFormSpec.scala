@@ -52,7 +52,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error" in {
         val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> "2100"))
         val error = result("").error.getOrElse(fail("error against form not generated"))
-        error.message mustBe "Date of birth can't be in the future"
+        error.message mustBe "form.error.date.future"
       }
     }
 
@@ -60,7 +60,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the year field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> "1800"))
         val error = result("year").error.getOrElse(fail("error against year field not generated"))
-        error.message mustBe "Year must be above 1850"
+        error.message mustBe "form.error.year.low"
       }
     }
 
@@ -68,7 +68,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the entire form" in {
         val result = form.bind(Map("day" -> "31", "month" -> "2", "year" -> "2000"))
         val error = result("").error.getOrElse(fail("error against form not generated"))
-        error.message mustBe "Day not in month"
+        error.message mustBe "form.error.date.day"
       }
     }
 
@@ -76,7 +76,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the day field" in {
         val result = form.bind(Map("day" -> "0", "month" -> "3", "year" -> "2000"))
         val error = result("day").error.getOrElse(fail("error against day field not generated"))
-        error.message mustBe "Day must be above 0"
+        error.message mustBe "form.error.day.low"
       }
     }
 
@@ -84,7 +84,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "0", "year" -> "2000"))
         val error = result("month").error.getOrElse(fail("error against month field not generated"))
-        error.message mustBe "Month must be above 0"
+        error.message mustBe "form.error.month.low"
       }
     }
 
@@ -92,7 +92,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "32", "month" -> "3", "year" -> "2000"))
         val error = result("day").error.getOrElse(fail("error against day field not generated"))
-        error.message mustBe "Day must be be 31 or below"
+        error.message mustBe "form.error.day.high"
       }
     }
 
@@ -100,7 +100,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "13", "year" -> "2000"))
         val error = result("month").error.getOrElse(fail("error against month field not generated"))
-        error.message mustBe "Month must be 12 or below"
+        error.message mustBe "form.error.month.high"
       }
     }
 
@@ -108,7 +108,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the day field" in {
         val result = form.bind(Map("day" -> "", "month" -> "3", "year" -> "2000"))
         val error = result("day").error.getOrElse(fail("error against day field not generated"))
-        error.message mustBe "Enter a Day"
+        error.message mustBe "form.error.day.blank"
       }
     }
 
@@ -116,7 +116,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "", "year" -> "2000"))
         val error = result("month").error.getOrElse(fail("error against month field not generated"))
-        error.message mustBe "Enter a Month"
+        error.message mustBe "form.error.month.blank"
       }
     }
 
@@ -124,7 +124,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the year field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> ""))
         val error = result("year").error.getOrElse(fail("error against year field not generated"))
-        error.message mustBe "Enter a Year"
+        error.message mustBe "form.error.year.blank"
       }
     }
 
@@ -132,7 +132,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the day field" in {
         val result = form.bind(Map("day" -> "a", "month" -> "3", "year" -> "2000"))
         val error = result("day").error.getOrElse(fail("error against day field not generated"))
-        error.message mustBe "Day must be a number"
+        error.message mustBe "form.error.day.char"
       }
     }
 
@@ -140,7 +140,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the month field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "a", "year" -> "2000"))
         val error = result("month").error.getOrElse(fail("error against month field not generated"))
-        error.message mustBe "Month must be a number"
+        error.message mustBe "form.error.month.char"
       }
     }
 
@@ -148,7 +148,7 @@ class DobFormSpec extends UnitSpec {
       "result in a an error against the year field" in {
         val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> "a"))
         val error = result("year").error.getOrElse(fail("error against year field not generated"))
-        error.message mustBe "Year must be a number"
+        error.message mustBe "form.error.year.char"
       }
     }
 
