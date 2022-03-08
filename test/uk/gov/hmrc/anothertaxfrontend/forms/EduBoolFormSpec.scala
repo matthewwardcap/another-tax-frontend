@@ -28,7 +28,7 @@ class EduBoolFormSpec extends UnitSpec {
       "result in a an error against the education field" in {
         val result = form.bind(Map("" -> ""))
         val error = result("education").error.getOrElse(fail("error against education field not generated"))
-        error.message mustBe "Choose an education option"
+        error.message mustBe "form.error.bool.blank"
       }
     }
 

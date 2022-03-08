@@ -26,7 +26,7 @@ case class EduBoolData(
 object EduBoolForm {
   val form: Form[EduBoolData] = Form(mapping(
     "education" -> optional(text)
-      .verifying("Choose an education option", value => value.isDefined)
+      .verifying("form.error.bool.blank", value => value.isDefined)
       .transform[Boolean](_.get.toBoolean, value => Some(value.toString))
   )(EduBoolData.apply)(EduBoolData.unapply)
   )

@@ -61,3 +61,5 @@ form.error.year.char = Year must be a number
 form.error.year.low = Year must be above 1850
 form.error.date.day = Day not in month
 form.error.date.future = Date of birth can't be in the future
+
+form.error.bool.blank = Choose an education option
