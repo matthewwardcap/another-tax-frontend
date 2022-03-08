@@ -63,3 +63,17 @@ form.error.date.day = Day not in month
 form.error.date.future = Date of birth can't be in the future
 
 form.error.bool.blank = Choose an education option
+
+form.error.edu.day.blank = Enter a Day
+form.error.edu.day.char = Day must be a number
+form.error.edu.day.low = Day must be above 0
+form.error.edu.day.high = Day must be 31 or below
+form.error.edu.month.blank = Enter a Month
+form.error.edu.month.char = Month must be a number
+form.error.edu.month.low = Month must be above 0
+form.error.edu.month.high = Day must be 12 or below
+form.error.edu.year.blank = Enter a Year
+form.error.edu.year.char = Year must be a number
+form.error.edu.year.low = Year must be above 1850
+form.error.edu.date.day = Day not in month
+form.error.edu.date.future = Can't have finished education in the future
