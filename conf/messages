@@ -79,3 +79,5 @@ form.error.edu.date.day = Day not in month
 form.error.edu.date.future = Can't have finished education in the future
 
 form.error.emp.blank = Choose an employment option
+
+form.error.salary.low = Salary can't be below £0

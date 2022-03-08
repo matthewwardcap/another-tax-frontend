@@ -36,7 +36,7 @@ class SalaryFormSpec extends UnitSpec {
       "result in a an error against the salary field" in {
         val result = form.bind(Map("salary" -> "-1"))
         val error = result("").error.getOrElse(fail("error against salary field not generated"))
-        error.message mustBe "Salary can't be below £0"
+        error.message mustBe "form.error.salary.low"
       }
     }
 

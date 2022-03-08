@@ -26,6 +26,6 @@ object SalaryForm {
   val form: Form[SalaryData] = Form(mapping(
     "salary" -> bigDecimal(32,2),
   )(SalaryData.apply)(SalaryData.unapply)
-    .verifying("Salary can't be below £0", model => model.salary >= 0)
+    .verifying("form.error.salary.low", model => model.salary >= 0)
   )
 }
