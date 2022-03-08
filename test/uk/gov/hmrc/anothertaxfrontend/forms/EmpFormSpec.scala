@@ -28,7 +28,7 @@ class EmpFormSpec extends UnitSpec {
       "result in a an error against the employmentStatus field" in {
         val result = form.bind(Map("" -> ""))
         val error = result("employmentStatus").error.getOrElse(fail("error against employmentStatus field not generated"))
-        error.message mustBe "Choose an employment option"
+        error.message mustBe "form.error.emp.blank"
       }
     }
 

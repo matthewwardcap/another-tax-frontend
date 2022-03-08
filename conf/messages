@@ -77,3 +77,5 @@ form.error.edu.year.char = Year must be a number
 form.error.edu.year.low = Year must be above 1850
 form.error.edu.date.day = Day not in month
 form.error.edu.date.future = Can't have finished education in the future
+
+form.error.emp.blank = Choose an employment option
