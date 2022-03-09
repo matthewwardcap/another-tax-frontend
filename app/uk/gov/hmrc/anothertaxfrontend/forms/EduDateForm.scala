@@ -46,6 +46,7 @@ object EduDateForm {
     "year" -> text
       .verifying("form.error.edu.year.blank", value => value.nonEmpty)
       .verifying("form.error.edu.year.char", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .verifying("form.error.edu.year.length", i => i.length < 5)
       .transform[Int](_.toInt, _.toString)
       .verifying("form.error.edu.year.low", i => i > 1850)
   )(EduDateData.apply)(EduDateData.unapply)

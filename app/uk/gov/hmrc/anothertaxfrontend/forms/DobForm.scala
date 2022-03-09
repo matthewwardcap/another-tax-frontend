@@ -46,6 +46,7 @@ object DobForm {
     "year" -> text
       .verifying("form.error.year.blank", value => value.nonEmpty)
       .verifying("form.error.year.char", i => Try(i.toInt).isSuccess || i.isEmpty)
+      .verifying("form.error.year.length", i => i.length < 5)
       .transform[Int](_.toInt, _.toString)
       .verifying("form.error.year.low", i => i > 1850)
   )(DobData.apply)(DobData.unapply)

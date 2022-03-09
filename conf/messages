@@ -67,6 +67,7 @@ form.error.month.high = Day must be 12 or below
 form.error.year.blank = Enter a Year
 form.error.year.char = Year must be a number
 form.error.year.low = Year must be above 1850
+form.error.year.length = Year can't be more than four characters
 form.error.date.day = Day not in month
 form.error.date.future = Date of birth can't be in the future
 
@@ -83,6 +84,7 @@ form.error.edu.month.high = Day must be 12 or below
 form.error.edu.year.blank = Enter a Year
 form.error.edu.year.char = Year must be a number
 form.error.edu.year.low = Year must be above 1850
+form.error.edu.year.length = Year can't be more than four characters
 form.error.edu.date.day = Day not in month
 form.error.edu.date.future = Can't have finished education in the future
 

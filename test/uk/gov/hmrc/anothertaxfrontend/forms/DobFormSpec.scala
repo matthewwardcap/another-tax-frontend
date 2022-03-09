@@ -152,6 +152,14 @@ class DobFormSpec extends UnitSpec {
       }
     }
 
+    "year more than 4 characters" must {
+      "result in a an error against the year field" in {
+        val result = form.bind(Map("day" -> "19", "month" -> "3", "year" -> "20000"))
+        val error = result("year").error.getOrElse(fail("error against year field not generated"))
+        error.message mustBe "form.error.year.length"
+      }
+    }
+
     "bound with data containing a valid date" must {
 
       val model = DobData(19, 3, 2000)
