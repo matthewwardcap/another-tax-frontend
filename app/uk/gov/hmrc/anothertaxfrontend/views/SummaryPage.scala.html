@@ -25,11 +25,15 @@
 
 @formatType = @{DateTimeFormatter.ofPattern("dd-MM-yyyy")}
 
+@rowValue(value:String, key:String)={
+    <span data-id="@key">@value</span>
+}
+
 @row(value: String, key: String, url: String) = @{
     if (value != "") {
         Some(SummaryListRow(
             key = Key(content = Text(messages(key))),
-            value = Value(content = Text(value)),
+            value = Value(content = HtmlContent(rowValue(value, key))),
             actions = Some(Actions(
                 items = Seq(
                     ActionItem(
