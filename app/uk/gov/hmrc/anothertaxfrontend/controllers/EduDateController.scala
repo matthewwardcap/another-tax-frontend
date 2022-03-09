@@ -59,7 +59,7 @@ class EduDateController @Inject()(
     val summary = request.session.get("summary").exists(summary => Json.parse(summary).as[Boolean])
     val controllerRoute = if (!summary) routes.EmpController.show else routes.SummaryController.show
     val homeRoute = routes.HelloWorldController.helloWorld
-    val format = DateTimeFormatter.ofPattern("dd-M-yyyy")
+    val format = DateTimeFormatter.ofPattern("d-M-yyyy")
 
     request.session.get("user") match {
       case None => Future.successful(Redirect(homeRoute))
