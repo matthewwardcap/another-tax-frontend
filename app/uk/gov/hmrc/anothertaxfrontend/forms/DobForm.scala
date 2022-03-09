@@ -50,6 +50,6 @@ object DobForm {
       .verifying("form.error.year.low", i => i > 1850)
   )(DobData.apply)(DobData.unapply)
     .verifying("form.error.date.day", model => model.day < YearMonth.from(LocalDate.of(model.year, model.month, 1)).atEndOfMonth().getDayOfMonth)
-    .verifying("form.error.date.future", model => !LocalDate.parse(model.year.toString+"-"+model.month.toString+"-"+model.day.toString, DateTimeFormatter.ofPattern("yyyy-M-dd")).isAfter(LocalDate.now))
+    .verifying("form.error.date.future", model => !LocalDate.parse(model.year.toString+"-"+model.month.toString+"-"+model.day.toString, DateTimeFormatter.ofPattern("yyyy-M-d")).isAfter(LocalDate.now))
   )
 }
