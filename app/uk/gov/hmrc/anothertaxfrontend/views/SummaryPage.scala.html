@@ -69,7 +69,7 @@
     ).flatten
 }
 
-@layout(pageTitle = Some(messages("service.name"))) {
+@layout(pageTitle = Some(messages("summaryPage.pageTitle"))) {
     <h1 class="govuk-heading-xl">@{messages("summaryPage.title")}</h1>
 
     @govukSummaryList(SummaryList(rows = seq))

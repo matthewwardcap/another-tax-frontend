@@ -21,7 +21,7 @@
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukPanel: GovukPanel, govukInsetText: GovukInsetText)
 @(total: BigDecimal)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = Some(messages("service.name"))) {
+@layout(pageTitle = Some(messages("taxPage.pageTitle"))) {
 
     @govukPanel(Panel(
         title = Text(messages("taxPage.title")),

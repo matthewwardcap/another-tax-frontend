@@ -21,7 +21,7 @@
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukDateInput : GovukDateInput, govukBackLink: GovukBackLink, govukErrorSummary: GovukErrorSummary)
 @(form: Form[DobData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = Some(messages("service.name"))) {
+@layout(pageTitle = Some(messages("dobPage.pageTitle"))) {
     @if(!summary) {
         @govukBackLink(BackLink(
             href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.DobController.back.url,

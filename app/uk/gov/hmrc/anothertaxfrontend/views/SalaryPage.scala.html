@@ -21,7 +21,7 @@
 @this(layout: Layout, formHelper: FormWithCSRF, govukButton: GovukButton, govukInput : GovukInput, govukBackLink: GovukBackLink)
 @(form: Form[SalaryData], summary: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = Some(messages("service.name"))) {
+@layout(pageTitle = Some(messages("salaryPage.pageTitle"))) {
     @if(!summary) {
         @govukBackLink(BackLink(
             href = uk.gov.hmrc.anothertaxfrontend.controllers.routes.SalaryController.back.url,

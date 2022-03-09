@@ -13,25 +13,32 @@ radio.no = No
 radio.yes = Yes
 radio.error = Select an option
 
+namePage.pageTitle = Name - Another Tax Service - GOV.UK
 namePage.title = Enter your name
 namePage.firstName = First Name
 namePage.middleName = Middle Name
 namePage.lastName = Last Name
 
+dobPage.pageTitle = Date of birth - Another Tax Service - GOV.UK
 dobPage.title = Enter your date of birth
 
+eduBoolPage.pageTitle = Still in education - Another Tax Service - GOV.UK
 eduBoolPage.title = Are you still in education?
 
+eduDatePage.pageTitle = Education finish date - Another Tax Service - GOV.UK
 eduDatePage.title = What year did you finish education?
 
+empPage.pageTitle = Employment status - Another Tax Service - GOV.UK
 empPage.title = What is your employment status?
 radio.unemployed = Unemployed
 radio.fullTime = Full-time Employment
 radio.partTime = Part-time Employment
 
+salaryPage.pageTitle = Salary - Another Tax Service - GOV.UK
 salaryPage.title = What is your annual salary?
 salaryPage.text = Annual salary - The amount you earn each year before tax
 
+summaryPage.pageTitle = Check your answers - Another Tax Service - GOV.UK
 summaryPage.title = Check your answers
 list.name = Name
 list.dob = Date of Birth
@@ -40,6 +47,7 @@ list.eduDate = Education finish date
 list.emp = Employment Status
 list.salary = Salary
 
+taxPage.pageTitle = Tax total - Another Tax Service - GOV.UK
 taxPage.title = Application Complete
 
 form.error.firstname.blank = Enter your first name
